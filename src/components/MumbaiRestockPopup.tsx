@@ -62,6 +62,7 @@ const MumbaiRestockPopup = () => {
                 e.stopPropagation();
                 handleClose();
               }}
+              aria-label="Close"
               className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10 bg-black/20 rounded-full p-2 backdrop-blur-sm"
             >
               <X className="h-5 w-5" />

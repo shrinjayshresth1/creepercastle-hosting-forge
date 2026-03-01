@@ -94,10 +94,7 @@ const Discord = () => {
       <div className="flex flex-col min-h-screen bg-navy text-white">
         <div className="fixed inset-0 z-0 pointer-events-none">
           {/* Background image overlay with underwater Minecraft scene */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40" 
-            style={{ backgroundImage: 'url("/lovable-uploads/aecdd243-6cbd-4e56-82a8-b494c26108cc.png")' }}
-          ></div>
+          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 bg-scene-img"></div>
           
           {/* Gradient overlay for better text visibility */}
           <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/90 via-navy/80 to-navy-light/70"></div>

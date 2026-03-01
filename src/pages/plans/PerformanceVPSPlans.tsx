@@ -107,7 +107,7 @@ const PerformanceVPSPlans = () => {
     {
       icon: <TrendingUp className="w-6 h-6" />,
       title: '5.3 GHz Turbo Frequency',
-      description: 'Experience blazing-fast clock speeds with turbo boost up to 5.3 GHz. This exceptional frequency ensures your Minecraft server responds instantly, handles complex plugins effortlessly, and delivers buttery-smooth gameplay even with hundreds of players online simultaneously.',
+      description: 'Experience blazing-fast clock speeds with turbo boost up to 5.3 GHz. This exceptional frequency ensures your server responds instantly, handles complex workloads effortlessly, and delivers buttery-smooth performance even with hundreds of concurrent users online simultaneously.',
       gradient: 'from-orange-500 to-red-600',
     },
     {
@@ -180,10 +180,7 @@ const PerformanceVPSPlans = () => {
       <div className="flex flex-col min-h-screen bg-navy text-white relative overflow-hidden">
         {/* Premium background with golden/orange particles */}
         <div className="fixed inset-0 z-0 pointer-events-none">
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40" 
-            style={{ backgroundImage: 'url("/lovable-uploads/aecdd243-6cbd-4e56-82a8-b494c26108cc.png")' }}
-          ></div>
+          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 bg-scene-img"></div>
           
           <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/95 via-navy/85 to-amber-900/20"></div>
           

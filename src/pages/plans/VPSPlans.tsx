@@ -204,10 +204,7 @@ const VPSPlans = () => {
         {/* Enhanced background with underwater Minecraft scene */}
         <div className="fixed inset-0 z-0 pointer-events-none">
           {/* Background image overlay with underwater Minecraft scene */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40" 
-            style={{ backgroundImage: 'url("/lovable-uploads/aecdd243-6cbd-4e56-82a8-b494c26108cc.png")' }}
-          ></div>
+          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 bg-scene-img"></div>
           
           {/* Gradient overlay for better text visibility */}
           <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/90 via-navy/80 to-navy-light/70"></div>
@@ -323,7 +320,7 @@ const VPSPlans = () => {
                   Why <span className="bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">Intel Platinum 8168</span> Crushes Everything
                 </h2>
                 <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                  24-core data center beast on our own infrastructure - purpose-built for Minecraft, optimized for domination, engineered for victory
+                  24-core data center beast on our own infrastructure — high-density compute, optimized for domination, engineered for victory
                 </p>
               </motion.div>
 

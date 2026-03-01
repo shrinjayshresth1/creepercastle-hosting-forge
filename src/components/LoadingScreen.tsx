@@ -15,7 +15,7 @@ const LoadingScreen = () => {
           alt="CreeperCastle.cloud" 
           className="w-32 h-32 animate-pulse-slow"
         />
-        <div className="absolute inset-0 rounded-full blur-3xl bg-creeper/20 animate-pulse" style={{transform: 'scale(1.5)'}}></div>
+        <div className="absolute inset-0 scale-150 rounded-full blur-3xl bg-creeper/20 animate-pulse"></div>
       </motion.div>
       
       <motion.h1 
@@ -47,7 +47,7 @@ const LoadingScreen = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.7, duration: 0.5 }}
       >
-        Preparing your Minecraft experience...
+        Preparing your gaming experience...
       </motion.p>
     </div>
   );

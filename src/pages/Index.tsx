@@ -248,7 +248,6 @@ const Index = () => {
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-        <meta name="theme-color" content="#50C878" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="CreeperCastle" />
@@ -286,7 +285,6 @@ const Index = () => {
         
         {/* Favicon */}
         <link rel="icon" href="/lovable-uploads/570fb7e4-e36a-4bb5-a9ef-be9e7ae57b15.png" type="image/png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/lovable-uploads/570fb7e4-e36a-4bb5-a9ef-be9e7ae57b15.png" />
         
         {/* JSON-LD Structured Data */}
         <script type="application/ld+json">
@@ -312,10 +310,7 @@ const Index = () => {
           {/* Enhanced background with underwater Minecraft scene */}
           <div className="fixed inset-0 z-0 pointer-events-none">
             {/* Background image overlay with underwater Minecraft scene */}
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40" 
-              style={{ backgroundImage: 'url("/lovable-uploads/aecdd243-6cbd-4e56-82a8-b494c26108cc.png")' }}
-            ></div>
+            <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 bg-scene-img"></div>
             
             {/* Gradient overlay for better text visibility */}
             <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/90 via-navy/80 to-navy-light/70"></div>

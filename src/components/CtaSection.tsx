@@ -26,10 +26,7 @@ const CtaSection = () => {
     <section className="py-32 relative overflow-hidden" id="cta">
       {/* Animated background elements */}
       <div className="absolute inset-0 z-0">
-        <div 
-          className="absolute top-0 left-0 w-full h-full opacity-5 bg-[url('https://i.pinimg.com/originals/c9/71/fa/c971fa50edb3b3a87be3fa2e46ab90d2.jpg')]" 
-          style={{ backgroundSize: '100px 100px' }}
-        ></div>
+        <div className="absolute inset-0 bg-dot-grid opacity-30 pointer-events-none"></div>
         <motion.div 
           className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-creeper/5 blur-3xl"
           animate={{ 
@@ -75,14 +72,14 @@ const CtaSection = () => {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: 0.5 }}
-            >Power Up</motion.span> Your Minecraft Experience?
+            >Power Up</motion.span> Your Gaming Experience?
           </motion.h2>
           
           <motion.p 
             className="text-xl text-gray-300 mb-10"
             variants={itemVariants}
           >
-            Join thousands of satisfied players and server owners who trust CreeperCastle.cloud for reliable, high-performance Minecraft hosting with industry-leading protection.
+            Join thousands of satisfied players and server owners who trust CreeperCastle.cloud for reliable, high-performance game server hosting with industry-leading protection.
           </motion.p>
           
           <motion.div
@@ -124,33 +121,19 @@ const CtaSection = () => {
             variants={itemVariants}
             transition={{ delay: 0.6 }}
           >
-            <p className="text-gray-400 mb-4">Trusted by Minecraft communities worldwide</p>
-            <div className="flex flex-wrap justify-center gap-8 opacity-70">
-              <motion.div 
-                className="text-2xl font-bold"
-                whileHover={{ scale: 1.1, color: "#50C878" }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >1000+</motion.div>
-              <motion.div 
-                className="text-2xl font-bold"
-                whileHover={{ scale: 1.1, color: "#50C878" }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >4+</motion.div>
-              <motion.div 
-                className="text-2xl font-bold"
-                whileHover={{ scale: 1.1, color: "#50C878" }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >99.9%</motion.div>
-              <motion.div 
-                className="text-2xl font-bold"
-                whileHover={{ scale: 1.1, color: "#50C878" }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >24/7</motion.div>
-            </div>
-            <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-500">
-              <div>Active Servers</div>
-              <div>Uptime</div>
-              <div>Support</div>
+            <p className="text-gray-400 mb-4">Trusted by gaming communities worldwide</p>
+            <div className="flex flex-wrap justify-center gap-12 opacity-80">
+              {[
+                { value: '1000+', label: 'Active Servers' },
+                { value: '99.9%', label: 'Uptime' },
+                { value: '17 Tbps', label: 'DDoS Protection' },
+                { value: '24/7', label: 'Support' },
+              ].map(({ value, label }) => (
+                <div key={label} className="flex flex-col items-center gap-1">
+                  <span className="text-2xl font-bold text-white">{value}</span>
+                  <span className="text-sm text-gray-500">{label}</span>
+                </div>
+              ))}
             </div>
           </motion.div>
         </motion.div>

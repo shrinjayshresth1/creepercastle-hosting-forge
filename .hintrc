@@ -1,0 +1,6 @@
+{
+  "hints": {
+    "compat-api/html": "off",
+    "compat-api/css": "off"
+  }
+}

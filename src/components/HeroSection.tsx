@@ -1,216 +1,181 @@
-
+﻿
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Server, Shield, Cpu } from "lucide-react";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Server, Shield, Cpu, Zap } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const textVariants = [
+  "Gaming",
+  "SMP",
+  "Discord Bot",
+  "FPS",
+  "Battle Royale",
+  "Roleplay",
+  "Modded",
+  "Survival",
+];
 
 const HeroSection = () => {
-  // Enhanced rotating text variants with more attractive Minecraft hosting related keywords
-  const textVariants = [
-    "Minecraft", 
-    "SMP", 
-    "Modded", 
-    "Bedrock", 
-    "Java", 
-    "Survival", 
-    "Creative", 
-    "Adventure", 
-    "Skyblock",
-    "PvP"
-  ];
+  const [index, setIndex] = useState(0);
+
+  // Single interval swap â€” far cheaper than 10 simultaneous framer-motion animations
+  useEffect(() => {
+    const id = setInterval(() => setIndex(i => (i + 1) % textVariants.length), 2200);
+    return () => clearInterval(id);
+  }, []);
   
   return (
     <div className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden z-0">
-        {/* Floating elements in background */}
-        {Array(6).fill(0).map((_, i) => (
-          <motion.div 
-            key={i}
-            className="absolute opacity-10"
-            initial={{ 
-              x: Math.random() * 100 + "%", 
-              y: Math.random() * 100 + "%",
-              rotate: Math.random() * 360,
-              scale: 0.5 + Math.random() * 0.5
-            }}
-            animate={{ 
-              y: ["-10%", "110%"],
-              rotate: [0, 360],
-              opacity: [0.05, 0.1, 0.05]
-            }}
-            transition={{ 
-              duration: 15 + Math.random() * 20,
-              repeat: Infinity,
-              ease: "linear",
-              delay: Math.random() * 5
-            }}
-          >
-            <div className="w-16 h-16 bg-creeper/20 rounded-sm" />
-          </motion.div>
-        ))}
-      </div>
-      
+      {/* Static dot-grid â€” zero paint cost */}
+      <div className="absolute inset-0 bg-dot-grid opacity-40 pointer-events-none" />
+
+      {/* Ambient glow blobs â€” opacity-only animation, compositor-safe */}
+      <div
+        className="absolute top-1/4 -left-40 w-[480px] h-[480px] rounded-full bg-creeper/10 blur-3xl animate-glow pointer-events-none"
+      />
+      <div
+        className="absolute -bottom-20 right-0 w-[360px] h-[360px] rounded-full bg-violet-600/8 blur-3xl animate-glow animation-delay-2000 pointer-events-none"
+      />
+
       <div className="container mx-auto px-4 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center">
-          <motion.div 
-            className="lg:w-1/2 mb-10 lg:mb-0"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+        <div className="flex flex-col lg:flex-row items-center gap-12">
+
+          {/* Left â€” copy */}
+          <motion.div
+            className="lg:w-1/2 text-center lg:text-left"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, ease: "easeOut" }}
           >
-            <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
-              initial={{ opacity: 0, y: 20 }}
+            {/* Badge */}
+            <motion.div
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-creeper/30 bg-creeper/10 text-creeper text-sm font-medium mb-6"
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ delay: 0.1 }}
             >
-              Unleash Your{" "}
-              <span className="relative inline-block w-[180px]">
-                <span className="invisible">Minecraft</span>
-                {textVariants.map((text, index) => (
-                  <motion.span 
-                    key={text}
-                    className="text-creeper absolute top-0 left-0"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ 
-                      opacity: [0, 1, 1, 0], 
-                      y: [20, 0, 0, -20],
-                    }}
-                    transition={{ 
-                      duration: 2,
-                      delay: index * 2,
-                      repeat: Infinity,
-                      repeatDelay: textVariants.length * 2 - 2
-                    }}
-                  >
-                    {text}
-                  </motion.span>
-                ))}
-              </span>
-              {" "}Server's True Potential
-            </motion.h1>
-            
-            <motion.p 
-              className="text-xl text-gray-300 mb-8 leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              Premium hosting with instant setup, high performance hardware, and unmatched DDoS protection. Your Minecraft adventure starts here.
-            </motion.p>
-            
-            <motion.div 
-              className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button className="minecraft-btn rounded-md text-lg py-6 px-8 relative overflow-hidden group pixel-animate" asChild>
-                  <a href="https://billing.creepercastle.in" target="_blank" rel="noopener noreferrer">
-                    <span className="relative z-10">Store</span>
-                    <span className="absolute inset-0 bg-creeper-light opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
-                  </a>
-                </Button>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button variant="outline" className="border-creeper text-creeper hover:bg-creeper/10 rounded-md text-lg py-6 px-8 relative overflow-hidden group" asChild>
-                  <a href="https://discord.gg/RuQ9neH56S" target="_blank" rel="noopener noreferrer">
-                    <span className="relative z-10">Discord</span>
-                    <span className="absolute inset-0 bg-creeper/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  </a>
-                </Button>
-              </motion.div>
+              <Zap size={13} />
+              India's #1 Game Server Hosting
             </motion.div>
-            
-            <motion.div 
-              className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
+
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              Unleash Your{" "}
+              {/* AnimatePresence swap â€” single active element instead of 8 concurrent */}
+              <span className="relative inline-flex h-[1.2em] items-center overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={textVariants[index]}
+                    className="text-creeper"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -16 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                  >
+                    {textVariants[index]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+              {" "}Server
+            </h1>
+
+            <motion.p
+              className="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
             >
-              <motion.div 
-                className="flex items-center"
-                whileHover={{ x: 5, scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              Premium hosting with instant setup, high-performance hardware, and
+              unmatched DDoS protection. Your gaming adventure starts here.
+            </motion.p>
+
+            <motion.div
+              className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.45 }}
+            >
+              <Button className="game-btn rounded-lg text-base py-5 px-7 font-semibold" asChild>
+                <a href="https://billing.creepercastle.in" target="_blank" rel="noopener noreferrer">
+                  View Plans
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                className="border-white/20 text-white hover:bg-white/[0.06] rounded-lg text-base py-5 px-7"
+                asChild
               >
-                <div className="mr-3 p-2 bg-creeper/10 rounded-full animate-pulse-slow">
-                  <Server className="text-creeper h-5 w-5" />
-                </div>
-                <div>
-                  <p className="font-medium">Instant Setup</p>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                className="flex items-center"
-                whileHover={{ x: 5, scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
-                <div className="mr-3 p-2 bg-creeper/10 rounded-full animate-pulse-slow animation-delay-500">
-                  <Shield className="text-creeper h-5 w-5" />
-                </div>
-                <div>
-                  <p className="font-medium">CreeperShield™</p>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                className="flex items-center"
-                whileHover={{ x: 5, scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
-                <div className="mr-3 p-2 bg-creeper/10 rounded-full animate-pulse-slow animation-delay-1000">
-                  <Cpu className="text-creeper h-5 w-5" />
-                </div>
-                <div>
-                  <p className="font-medium">NVMe Storage</p>
-                </div>
-              </motion.div>
+                <a href="https://discord.gg/RuQ9neH56S" target="_blank" rel="noopener noreferrer">
+                  Join Discord
+                </a>
+              </Button>
+            </motion.div>
+
+            {/* Feature pills */}
+            <motion.div
+              className="mt-10 flex flex-wrap gap-2.5 justify-center lg:justify-start"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              {[
+                { icon: <Server size={13} />, label: "Instant Setup" },
+                { icon: <Shield size={13} />, label: "CreeperShieldâ„¢ DDoS" },
+                { icon: <Cpu size={13} />,    label: "NVMe Storage" },
+                { icon: <Zap size={13} />,    label: "99.9% Uptime" },
+              ].map(({ icon, label }) => (
+                <span
+                  key={label}
+                  className="flex items-center gap-1.5 text-sm text-gray-300 bg-white/[0.05] border border-white/[0.08] px-3 py-1.5 rounded-full"
+                >
+                  <span className="text-creeper">{icon}</span>
+                  {label}
+                </span>
+              ))}
             </motion.div>
           </motion.div>
-          
-          <motion.div 
+
+          {/* Right â€” logo */}
+          <motion.div
             className="lg:w-1/2 flex justify-center"
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.65, delay: 0.15, ease: "easeOut" }}
           >
             <div className="relative">
-              <motion.div 
-                className="absolute inset-0 rounded-full blur-3xl bg-creeper/20 animate-morph"
-                animate={{ 
-                  scale: [0.8, 1, 0.8],
-                  opacity: [0.2, 0.5, 0.2]
-                }}
-                transition={{ 
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              ></motion.div>
-              <motion.img 
-                src="/lovable-uploads/570fb7e4-e36a-4bb5-a9ef-be9e7ae57b15.png" 
-                alt="CreeperCastle.cloud Logo" 
-                className="w-4/5 mx-auto rounded-lg"
-                animate={{ y: [-10, 10, -10], rotate: [0, 5, 0, -5, 0] }}
-                transition={{ 
-                  y: {
-                    duration: 6,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  },
-                  rotate: {
-                    duration: 10,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }
-                }}
+              {/* Glow â€” opacity-only, no repaint */}
+              <div
+                className="absolute inset-0 scale-[1.4] rounded-full blur-3xl bg-creeper/20 animate-glow"
+              />
+              <motion.img
+                src="/lovable-uploads/570fb7e4-e36a-4bb5-a9ef-be9e7ae57b15.png"
+                alt="CreeperCastle.cloud"
+                className="relative w-4/5 mx-auto rounded-2xl drop-shadow-2xl will-change-transform"
+                animate={{ y: [-8, 8] }}
+                transition={{ duration: 5, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
               />
             </div>
           </motion.div>
         </div>
+
+        {/* Stats bar */}
+        <motion.div
+          className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-4 rounded-2xl overflow-hidden border border-white/[0.07] divide-x divide-y md:divide-y-0 divide-white/[0.07]"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.75 }}
+        >
+          {[
+            { value: "1000+", label: "Active Servers" },
+            { value: "99.9%", label: "Uptime" },
+            { value: "17 Tbps", label: "DDoS Protection" },
+            { value: "24/7",   label: "Support" },
+          ].map(({ value, label }) => (
+            <div key={label} className="flex flex-col items-center justify-center py-5 px-4 bg-white/[0.025]">
+              <span className="text-2xl font-bold text-white">{value}</span>
+              <span className="text-sm text-gray-400 mt-0.5">{label}</span>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </div>
   );

@@ -224,7 +224,6 @@ const CreeperPanel = () => {
         
         {/* Favicon */}
         <link rel="icon" href="/lovable-uploads/5ec47ff0-f939-4968-8b39-ad88e0f3b7d6.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/lovable-uploads/5ec47ff0-f939-4968-8b39-ad88e0f3b7d6.png" />
         
         {/* JSON-LD Structured Data */}
         <script type="application/ld+json">
@@ -239,8 +238,7 @@ const CreeperPanel = () => {
         <div className="fixed inset-0 z-0 pointer-events-none">
           {/* Background image overlay with underwater Minecraft scene */}
           <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40" 
-            style={{ backgroundImage: 'url("/lovable-uploads/aecdd243-6cbd-4e56-82a8-b494c26108cc.png")' }}
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 bg-scene-img"
           ></div>
           
           {/* Gradient overlay for better text visibility */}

@@ -218,10 +218,7 @@ const PerformancePlans = () => {
       <div className="flex flex-col min-h-screen bg-navy text-white relative">
         {/* Enhanced background */}
         <div className="fixed inset-0 z-0 pointer-events-none">
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40" 
-            style={{ backgroundImage: 'url("/lovable-uploads/aecdd243-6cbd-4e56-82a8-b494c26108cc.png")' }}
-          ></div>
+          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 bg-scene-img"></div>
           
           <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/90 via-navy/80 to-navy-light/70"></div>
           
@@ -344,7 +341,7 @@ const PerformancePlans = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 via-orange-500/20 to-amber-500/10" />
             <div className="absolute inset-0">
               <div className="absolute top-10 left-20 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl animate-pulse" />
-              <div className="absolute bottom-10 right-20 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
+              <div className="absolute bottom-10 right-20 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl animate-pulse [animation-delay:1.5s]" />
             </div>
             
             <div className="container mx-auto px-4 relative z-10">
@@ -498,7 +495,7 @@ const PerformancePlans = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-purple-500/10" />
             <div className="absolute inset-0">
               <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
-              <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+              <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse [animation-delay:1s]" />
             </div>
             
             <div className="container mx-auto px-4 relative z-10">

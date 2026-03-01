@@ -23,14 +23,14 @@ const Footer = () => {
               <span className="font-bold text-xl ml-2">CreeperCastle<span className="text-creeper">.cloud</span></span>
             </div>
             <p className="text-gray-300 mb-4">
-              Premium Minecraft hosting with unbeatable performance, protection and support.
+              Premium game server hosting with unbeatable performance, protection and support.
             </p>
           </div>
           
           <div>
             <h3 className="font-bold mb-4 text-lg border-l-2 border-creeper pl-3">Hosting</h3>
             <ul className="space-y-2">
-              <li><a href="https://billing.creepercastle.in/index.php?rp=/store/minecraft-performance-servers" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-creeper transition-colors duration-300">Minecraft Plans</a></li>
+              <li><a href="https://billing.creepercastle.in/index.php?rp=/store/minecraft-performance-servers" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-creeper transition-colors duration-300">Game Server Plans</a></li>
               <li><a href="https://billing.creepercastle.in/index.php?rp=/store/vps-hosting" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-creeper transition-colors duration-300">VPS Hosting</a></li>
               <li><a href="/plans/creepershield" className="text-gray-300 hover:text-creeper transition-colors duration-300">CreeperShield</a></li>
               <li><a href="https://discord.gg/RuQ9neH56S" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-creeper transition-colors duration-300">Enterprise Solutions</a></li>

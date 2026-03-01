@@ -9,11 +9,15 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "strict": true,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
     "noImplicitAny": false,
     "noUnusedParameters": false,
     "skipLibCheck": true,
     "allowJs": true,
     "noUnusedLocals": false,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "forceConsistentCasingInFileNames": true
   }
 }

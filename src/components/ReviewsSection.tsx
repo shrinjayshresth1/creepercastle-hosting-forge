@@ -13,7 +13,7 @@ const testimonials = [
     rating: 5,
     comment: "CreeperCastle has been a game-changer for my community. The server performance is incredible, and the control panel makes management so easy. CreeperShield kept us online during a massive DDoS attack that took down other servers in our network.",
     verified: true,
-    plan: "Iron Plan"
+    plan: "Classic Plan"
   },
   {
     name: "Living Legend",
@@ -22,7 +22,7 @@ const testimonials = [
     rating: 5,
     comment: "I've tried many hosting providers, but CreeperCastle is by far the best for modded Minecraft. My 250-mod pack runs flawlessly, and the support team helped me optimize it even further. The NVMe storage makes a huge difference!",
     verified: true,
-    plan: "Diamond Plan"
+    plan: "Performance Plan"
   },
   {
     name: "Yaswath",
@@ -31,7 +31,7 @@ const testimonials = [
     rating: 4,
     comment: "Managing our 100-player server network has never been easier. The multi-server management tools are intuitive, and the automatic backups have saved us more than once. Very impressed with the performance and uptime.",
     verified: true,
-    plan: "Stone Plan"
+    plan: "Starter Plan"
   }
 ];
 
@@ -63,7 +63,7 @@ const ReviewsSection = () => {
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our <span className="text-creeper">Customers</span> Say</h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Join thousands of satisfied server owners who trust CreeperCastle.cloud with their Minecraft communities.
+            Join thousands of satisfied server owners who trust CreeperCastle.cloud with their gaming communities.
           </p>
         </motion.div>
         
