@@ -34,7 +34,7 @@ router.post(
       const transactionId = crypto.randomBytes(16).toString("hex");
 
       pendingTx.set(transactionId, {
-        userId: req.user!.sub,
+        userId: req.userId!,
         aadhaarLast4: last4,
         expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 min
       });
@@ -91,7 +91,7 @@ router.post(
         return;
       }
 
-      if (tx.userId !== req.user!.sub) {
+      if (tx.userId !== req.userId) {
         res.status(403).json({ message: "Unauthorized" });
         return;
       }
