@@ -24,4 +24,4 @@ echo "==> Restarting API"
 cd "$APP_DIR"
 pm2 restart creepercastle-api
 
-echo "Done! https://softauth.flexeere.com"
+echo "Done! https://new.creepercastle.cloud"

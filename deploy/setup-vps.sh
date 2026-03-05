@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # ─────────────────────────────────────────────────────────────────────────────
-# CreeperCastle — VPS setup script for softauth.flexeere.com
-# Run as the 'advps' user on 160.191.11.13
+# CreeperCastle — VPS setup script for new.creepercastle.cloud
+# Run as the 'advps' user on 103.124.208.13
 # Usage: bash setup-vps.sh
 # ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 
-DOMAIN="softauth.flexeere.com"
+DOMAIN="new.creepercastle.cloud"
 APP_DIR="/var/www/creepercastle"
 REPO="https://github.com/MastergamerzxD/creepercastle-hosting-forge.git"
 BRANCH="feature/admin"
@@ -65,7 +65,7 @@ SMTP_FROM=noreply@flexeere.net
 FAST2SMS_API_KEY=zRpbiVCdIcODFgel2j4aquSMAoEUNYy6PvBH03ntfGW8JwX1skxbzjF9VBvfECcRGroQwh5At1e4uP0m
 
 # ─── CORS ─────────────────────────────────────────────────────────────────────
-ALLOWED_ORIGINS=https://softauth.flexeere.com,https://creepercastle.cloud
+ALLOWED_ORIGINS=https://new.creepercastle.cloud,https://creepercastle.cloud
 ENVEOF
   echo "    server/.env written"
 else
