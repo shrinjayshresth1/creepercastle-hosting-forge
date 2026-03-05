@@ -12,10 +12,9 @@ export async function sendSmsOtp(phone: string, otp: string): Promise<void> {
 
   const params = new URLSearchParams({
     authorization: apiKey,
-    sender_id: process.env.FAST2SMS_SENDER_ID ?? "CREEPS",
     message,
     language: "english",
-    route: "q", // Quick Transactional
+    route: "q", // Quick Transactional — no sender_id required
     numbers: phone,
   });
 

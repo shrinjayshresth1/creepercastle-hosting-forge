@@ -231,9 +231,10 @@ router.post(
   authLimiter,
   async (req: Request, res: Response) => {
     try {
-      const { name, password, companyName, address, taxId, pendingFullToken } =
+      const { name, phone, password, companyName, address, taxId, pendingEmailToken } =
         req.body as {
           name?: string;
+          phone?: string;
           password?: string;
           companyName?: string;
           address?: {
@@ -244,24 +245,29 @@ router.post(
             country: string;
           };
           taxId?: string;
-          pendingFullToken?: string;
+          pendingEmailToken?: string;
         };
 
-      if (!name || !password || !address || !pendingFullToken) {
+      if (!name || !phone || !password || !address || !pendingEmailToken) {
         res.status(400).json({ message: "Missing required fields" });
+        return;
+      }
+
+      if (!/^[6-9]\d{9}$/.test(phone)) {
+        res.status(400).json({ message: "Enter a valid 10-digit Indian mobile number" });
         return;
       }
 
       let stepData;
       try {
-        stepData = verifyStepToken(pendingFullToken);
+        stepData = verifyStepToken(pendingEmailToken);
       } catch {
         res.status(400).json({ message: "Invalid or expired session. Please start over." });
         return;
       }
 
-      if (stepData.purpose !== "phone-verified" || !stepData.phone) {
-        res.status(400).json({ message: "Both email and phone must be verified first" });
+      if (stepData.purpose !== "email-verified") {
+        res.status(400).json({ message: "Email must be verified first" });
         return;
       }
 
@@ -272,7 +278,7 @@ router.post(
 
       // Final duplicate check
       const dup = await User.findOne({
-        $or: [{ email: stepData.email }, { phone: stepData.phone }],
+        $or: [{ email: stepData.email }, { phone }],
       });
       if (dup) {
         res.status(409).json({ message: "Account already exists. Please log in." });
@@ -284,10 +290,10 @@ router.post(
       const user = await User.create({
         name: name.trim(),
         email: stepData.email,
-        phone: stepData.phone,
+        phone,
         passwordHash,
         emailVerified: true,
-        phoneVerified: true,
+        phoneVerified: false, // will be verified after DLT registration
         companyName: companyName?.trim() || undefined,
         taxId: taxId?.trim() || undefined,
         address,

@@ -73,25 +73,10 @@ export function verifyEmailOtp(email: string, otp: string) {
   );
 }
 
-/** Step 2a — send OTP to phone (requires pendingEmailToken) */
-export function sendMobileOtp(phone: string, pendingEmailToken: string) {
-  return request<{ message: string }>("/api/auth/register/send-mobile-otp", {
-    method: "POST",
-    body: JSON.stringify({ phone, pendingEmailToken }),
-  });
-}
-
-/** Step 2b — verify mobile OTP → receive pendingFullToken */
-export function verifyMobileOtp(phone: string, otp: string, pendingEmailToken: string) {
-  return request<{ pendingFullToken: string }>(
-    "/api/auth/register/verify-mobile-otp",
-    { method: "POST", body: JSON.stringify({ phone, otp, pendingEmailToken }) }
-  );
-}
-
-/** Step 3 — complete registration (name, password, billing address) */
+/** Step 2 — complete registration (name, password, billing address) */
 export interface CompleteRegisterPayload {
   name: string;
+  phone: string;
   password: string;
   companyName?: string;
   address: {
@@ -102,7 +87,7 @@ export interface CompleteRegisterPayload {
     country: string;
   };
   taxId?: string;
-  pendingFullToken: string;
+  pendingEmailToken: string;
 }
 
 export function completeRegister(payload: CompleteRegisterPayload) {

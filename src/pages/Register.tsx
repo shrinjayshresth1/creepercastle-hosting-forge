@@ -33,8 +33,8 @@ import { useCountdown } from "@/hooks/use-countdown";
 
 // ─── Steps ────────────────────────────────────────────────────────────────────
 
-const STEPS = ["Account", "Email OTP", "Mobile OTP", "Profile", "Done"] as const;
-type Step = 0 | 1 | 2 | 3 | 4;
+const STEPS = ["Account", "Email OTP", "Profile", "Done"] as const;
+type Step = 0 | 1 | 2 | 3;
 
 // ─── Schemas ──────────────────────────────────────────────────────────────────
 
@@ -177,9 +177,8 @@ export default function Register() {
   const [busy, setBusy] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Tokens passed between steps
+  // Token passed between steps
   const [pendingEmailToken, setPendingEmailToken] = useState("");
-  const [pendingFullToken, setPendingFullToken] = useState("");
 
   // Preserve account data across steps
   const [accountData, setAccountData] = useState<AccountValues | null>(null);
@@ -222,9 +221,7 @@ export default function Register() {
         otp
       );
       setPendingEmailToken(token);
-      // Now send mobile OTP
-      await api.sendMobileOtp(accountData!.phone, token);
-      setStep(2);
+      setStep(2); // skip mobile OTP — go straight to Profile
     } catch (err) {
       toast({
         title: "Verification failed",
@@ -240,42 +237,6 @@ export default function Register() {
     try {
       await api.sendEmailOtp(accountData!.email);
       toast({ title: "OTP resent", description: "Check your inbox." });
-    } catch (err) {
-      toast({
-        title: "Error",
-        description: err instanceof Error ? err.message : "Failed to resend OTP.",
-        variant: "destructive",
-      });
-    }
-  }
-
-  // ─── Mobile OTP ───────────────────────────────────────────────────────────
-
-  async function verifyMobileOtp(otp: string) {
-    setBusy(true);
-    try {
-      const { pendingFullToken: token } = await api.verifyMobileOtp(
-        accountData!.phone,
-        otp,
-        pendingEmailToken
-      );
-      setPendingFullToken(token);
-      setStep(3);
-    } catch (err) {
-      toast({
-        title: "Verification failed",
-        description: err instanceof Error ? err.message : "Invalid OTP.",
-        variant: "destructive",
-      });
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  async function resendMobileOtp() {
-    try {
-      await api.sendMobileOtp(accountData!.phone, pendingEmailToken);
-      toast({ title: "OTP resent", description: "Check your messages." });
     } catch (err) {
       toast({
         title: "Error",
@@ -305,6 +266,7 @@ export default function Register() {
     try {
       const { accessToken, user } = await api.completeRegister({
         name: accountData!.name,
+        phone: accountData!.phone,
         password: accountData!.password,
         companyName: values.companyName || undefined,
         address: {
@@ -315,10 +277,10 @@ export default function Register() {
           country: values.country,
         },
         taxId: values.taxId || undefined,
-        pendingFullToken,
+        pendingEmailToken,
       });
       setSession(accessToken, user);
-      setStep(4);
+      setStep(3);
     } catch (err) {
       toast({
         title: "Error",
@@ -482,19 +444,8 @@ export default function Register() {
             />
           )}
 
-          {/* ── Step 2: Mobile OTP ───────────────────────────────────── */}
+          {/* ── Step 2: Complete profile ──────────────────────────────── */}
           {step === 2 && (
-            <OtpStep
-              title="Verify your mobile"
-              description={`We sent a 6-digit code to +91 ${accountData?.phone ?? "your number"}.`}
-              onVerify={verifyMobileOtp}
-              onResend={resendMobileOtp}
-              isVerifying={busy}
-            />
-          )}
-
-          {/* ── Step 3: Complete profile ──────────────────────────────── */}
-          {step === 3 && (
             <Form {...profileForm}>
               <form onSubmit={profileForm.handleSubmit(submitProfile)} className="space-y-4">
                 <div>
@@ -655,8 +606,8 @@ export default function Register() {
             </Form>
           )}
 
-          {/* ── Step 4: Success ───────────────────────────────────────── */}
-          {step === 4 && (
+          {/* ── Step 3: Success ───────────────────────────────────────── */}
+          {step === 3 && (
             <div className="text-center space-y-6">
               <div className="w-16 h-16 rounded-full bg-creeper/20 border border-creeper flex items-center justify-center mx-auto">
                 <Check className="w-8 h-8 text-creeper" />
