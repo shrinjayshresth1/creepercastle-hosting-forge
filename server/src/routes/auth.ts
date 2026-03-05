@@ -33,7 +33,13 @@ function userPublic(user: InstanceType<typeof User>) {
     phone: user.phone,
     emailVerified: user.emailVerified,
     phoneVerified: user.phoneVerified,
+    kycStatus: user.kycStatus,
+    twoFactorEnabled: user.twoFactorEnabled,
+    lastLoginAt: user.lastLoginAt,
     role: user.role,
+    companyName: user.companyName,
+    taxId: user.taxId,
+    address: user.address,
   };
 }
 
@@ -231,10 +237,9 @@ router.post(
   authLimiter,
   async (req: Request, res: Response) => {
     try {
-      const { name, phone, password, companyName, address, taxId, pendingEmailToken } =
+      const { name, password, companyName, address, taxId, pendingFullToken } =
         req.body as {
           name?: string;
-          phone?: string;
           password?: string;
           companyName?: string;
           address?: {
@@ -245,31 +250,28 @@ router.post(
             country: string;
           };
           taxId?: string;
-          pendingEmailToken?: string;
+          pendingFullToken?: string;
         };
 
-      if (!name || !phone || !password || !address || !pendingEmailToken) {
+      if (!name || !password || !address || !pendingFullToken) {
         res.status(400).json({ message: "Missing required fields" });
-        return;
-      }
-
-      if (!/^[6-9]\d{9}$/.test(phone)) {
-        res.status(400).json({ message: "Enter a valid 10-digit Indian mobile number" });
         return;
       }
 
       let stepData;
       try {
-        stepData = verifyStepToken(pendingEmailToken);
+        stepData = verifyStepToken(pendingFullToken);
       } catch {
         res.status(400).json({ message: "Invalid or expired session. Please start over." });
         return;
       }
 
-      if (stepData.purpose !== "email-verified") {
-        res.status(400).json({ message: "Email must be verified first" });
+      if (stepData.purpose !== "phone-verified") {
+        res.status(400).json({ message: "Mobile number must be verified first" });
         return;
       }
+
+      const phone = stepData.phone as string;
 
       if (password.length < 8) {
         res.status(400).json({ message: "Password must be at least 8 characters" });
@@ -293,7 +295,7 @@ router.post(
         phone,
         passwordHash,
         emailVerified: true,
-        phoneVerified: false, // will be verified after DLT registration
+        phoneVerified: true,
         companyName: companyName?.trim() || undefined,
         taxId: taxId?.trim() || undefined,
         address,
@@ -345,6 +347,7 @@ router.post("/login", authLimiter, async (req: Request, res: Response) => {
     const refreshToken = signRefreshToken(String(user._id));
 
     user.refreshTokenHash = await bcrypt.hash(refreshToken, 10);
+    user.lastLoginAt = new Date();
     await user.save();
 
     res.cookie("refreshToken", refreshToken, REFRESH_COOKIE_OPTIONS);

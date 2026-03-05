@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./config/db";
 import authRouter from "./routes/auth";
+import kycRouter from "./routes/kyc";
 
 const app = express();
 const PORT = process.env.PORT ?? 5000;
@@ -36,6 +37,7 @@ app.get("/health", (_req, res) => {
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.use("/api/auth", authRouter);
+app.use("/api/kyc", kycRouter);
 
 // ─── 404 handler ──────────────────────────────────────────────────────────────
 app.use((_req, res) => {

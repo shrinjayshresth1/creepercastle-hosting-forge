@@ -24,6 +24,8 @@ interface AuthContextValue extends AuthState {
   logout: () => Promise<void>;
   /** Called by Register page after completion */
   setSession: (accessToken: string, user: User) => void;
+  /** Re-fetches user from /api/auth/me — call after KYC or profile update */
+  refreshUser: () => Promise<void>;
 }
 
 // ─── Context ─────────────────────────────────────────────────────────────────
@@ -111,9 +113,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [scheduleRefresh]
   );
 
+  /** Re-fetches the user object — call after KYC or profile changes */
+  const refreshUser = useCallback(async () => {
+    if (!state.accessToken) return;
+    try {
+      const { user } = await api.getMe(state.accessToken);
+      setState((prev) => ({ ...prev, user }));
+    } catch {
+      // Silently ignore
+    }
+  }, [state.accessToken]);
+
   return (
     <AuthContext.Provider
-      value={{ ...state, login, logout, setSession }}
+      value={{ ...state, login, logout, setSession, refreshUser }}
     >
       {children}
     </AuthContext.Provider>

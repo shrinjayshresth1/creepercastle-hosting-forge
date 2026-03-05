@@ -7,6 +7,10 @@ export interface IUser extends Document {
   passwordHash: string;
   emailVerified: boolean;
   phoneVerified: boolean;
+  kycStatus: "pending" | "submitted" | "approved" | "rejected";
+  aadhaarLast4?: string;
+  twoFactorEnabled: boolean;
+  lastLoginAt?: Date;
   role: "customer" | "admin";
   companyName?: string;
   taxId?: string;
@@ -30,6 +34,10 @@ const userSchema = new Schema<IUser>(
     passwordHash: { type: String, required: true },
     emailVerified: { type: Boolean, default: false },
     phoneVerified: { type: Boolean, default: false },
+    kycStatus: { type: String, enum: ["pending", "submitted", "approved", "rejected"], default: "pending" },
+    aadhaarLast4: String,
+    twoFactorEnabled: { type: Boolean, default: false },
+    lastLoginAt: Date,
     role: { type: String, enum: ["customer", "admin"], default: "customer" },
     companyName: String,
     taxId: String,

@@ -50,7 +50,19 @@ export interface User {
   phone: string;
   emailVerified: boolean;
   phoneVerified: boolean;
+  kycStatus: "pending" | "submitted" | "approved" | "rejected";
+  twoFactorEnabled: boolean;
+  lastLoginAt?: string;
   role: "customer" | "admin";
+  companyName?: string;
+  taxId?: string;
+  address?: {
+    street: string;
+    city: string;
+    state: string;
+    postCode: string;
+    country: string;
+  };
 }
 
 export interface MeResponse {
@@ -73,10 +85,25 @@ export function verifyEmailOtp(email: string, otp: string) {
   );
 }
 
-/** Step 2 — complete registration (name, password, billing address) */
+/** Step 2a — send OTP to mobile */
+export function sendMobileOtp(phone: string, pendingEmailToken: string) {
+  return request<{ message: string }>("/api/auth/register/send-mobile-otp", {
+    method: "POST",
+    body: JSON.stringify({ phone, pendingEmailToken }),
+  });
+}
+
+/** Step 2b — verify mobile OTP → receive pendingFullToken */
+export function verifyMobileOtp(phone: string, otp: string, pendingEmailToken: string) {
+  return request<{ pendingFullToken: string }>(
+    "/api/auth/register/verify-mobile-otp",
+    { method: "POST", body: JSON.stringify({ phone, otp, pendingEmailToken }) }
+  );
+}
+
+/** Step 3 — complete registration (name, password, billing address) */
 export interface CompleteRegisterPayload {
   name: string;
-  phone: string;
   password: string;
   companyName?: string;
   address: {
@@ -87,7 +114,7 @@ export interface CompleteRegisterPayload {
     country: string;
   };
   taxId?: string;
-  pendingEmailToken: string;
+  pendingFullToken: string;
 }
 
 export function completeRegister(payload: CompleteRegisterPayload) {
@@ -135,5 +162,23 @@ export function resetPassword(email: string, otp: string, newPassword: string) {
   return request<{ message: string }>("/api/auth/reset-password", {
     method: "POST",
     body: JSON.stringify({ email, otp, newPassword }),
+  });
+}
+
+// ─── KYC ─────────────────────────────────────────────────────────────────────
+
+/** Initiate Aadhaar OTP */
+export function kycSendOtp(aadhaarNumber: string) {
+  return request<{ message: string; transactionId: string }>("/api/kyc/send-otp", {
+    method: "POST",
+    body: JSON.stringify({ aadhaarNumber }),
+  });
+}
+
+/** Verify Aadhaar OTP */
+export function kycVerifyOtp(transactionId: string, otp: string) {
+  return request<{ message: string; kycStatus: string }>("/api/kyc/verify-otp", {
+    method: "POST",
+    body: JSON.stringify({ transactionId, otp }),
   });
 }
