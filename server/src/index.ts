@@ -9,6 +9,9 @@ import kycRouter from "./routes/kyc";
 const app = express();
 const PORT = process.env.PORT ?? 5000;
 
+// Trust the first proxy (Nginx) so express-rate-limit can read X-Forwarded-For correctly
+app.set("trust proxy", 1);
+
 // ─── CORS ─────────────────────────────────────────────────────────────────────
 const allowedOrigins = (process.env.ALLOWED_ORIGINS ?? "http://localhost:5173").split(",");
 
