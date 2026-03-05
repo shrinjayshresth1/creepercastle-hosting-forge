@@ -8,8 +8,8 @@ set -euo pipefail
 
 DOMAIN="new.creepercastle.cloud"
 APP_DIR="/var/www/creepercastle"
-REPO="https://github.com/MastergamerzxD/creepercastle-hosting-forge.git"
-BRANCH="feature/admin"
+REPO="https://github.com/flexeere/creeper-web.git"
+BRANCH="main"
 NGINX_CONF="/etc/nginx/sites-available/$DOMAIN"
 
 echo "==> [1/9] System packages"

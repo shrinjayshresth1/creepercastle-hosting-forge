@@ -9,7 +9,7 @@ APP_DIR="/var/www/creepercastle"
 
 echo "==> Pulling latest code"
 cd "$APP_DIR"
-git pull origin feature/admin
+git pull origin main
 
 echo "==> Rebuilding frontend"
 npm install
