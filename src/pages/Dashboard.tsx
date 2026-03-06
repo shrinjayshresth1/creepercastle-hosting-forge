@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { AlertCircle, LogOut, User } from "lucide-react";
+import { AlertCircle, Home, LogOut, User } from "lucide-react";
 import KycModal from "@/components/KycModal";
 
 export default function Dashboard() {
@@ -85,13 +85,22 @@ export default function Dashboard() {
             </h1>
             <p className="text-gray-400 text-sm mt-1">{user?.email}</p>
           </div>
-          <Button
-            variant="outline"
-            onClick={logout}
-            className="border-white/20 text-gray-300 hover:text-white hover:bg-white/5 gap-2"
-          >
-            <LogOut className="w-4 h-4" /> Logout
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              asChild
+              className="border-white/20 text-gray-300 hover:text-white hover:bg-white/5 gap-2"
+            >
+              <Link to="/"><Home className="w-4 h-4" /> Homepage</Link>
+            </Button>
+            <Button
+              variant="outline"
+              onClick={logout}
+              className="border-white/20 text-gray-300 hover:text-white hover:bg-white/5 gap-2"
+            >
+              <LogOut className="w-4 h-4" /> Logout
+            </Button>
+          </div>
         </div>
 
         {/* Placeholder cards */}
