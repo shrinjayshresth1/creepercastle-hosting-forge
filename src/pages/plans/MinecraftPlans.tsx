@@ -3,9 +3,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, HelpCircle, Server, Infinity as InfinityIcon, MessageCircle } from "lucide-react";
+import { Check, HelpCircle, Server, Infinity as InfinityIcon, MessageCircle, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useCart } from "@/contexts/CartContext";
 
 const minecraftPlans = [
   {
@@ -193,6 +194,7 @@ const minecraftPlans = [
 ];
 
 const MinecraftPlans = () => {
+  const { addItem, items } = useCart();
   // Enhanced JSON-LD structured data for better SEO
   const minecraftHostingStructuredData = {
     "@context": "https://schema.org",
@@ -693,34 +695,34 @@ const MinecraftPlans = () => {
                           </div>
                         </div>
                         
-                        <Button className="w-full minecraft-btn mt-6" asChild>
-                          {!plan.isCustom ? (
-                            <a 
-                              href={
-                                plan.name === "Redstone Power Plan" ? "https://billing.creepercastle.in/products/minecraft-hosting/redstone-power-plan" :
-                                plan.name === "Diamond Core Plan" ? "https://billing.creepercastle.in/products/minecraft-hosting/diamond-core-plan" :
-                                plan.name === "Nether Storm Plan" ? "https://billing.creepercastle.in/products/minecraft-hosting/nether-storm-plan" :
-                                plan.name === "End Storm Plan" ? "https://billing.creepercastle.in/products/minecraft-hosting/end-storm-plan" :
-                                plan.name === "Wither Storm Plan" ? "https://billing.creepercastle.in/products/minecraft-hosting/wither-storm-plan" :
-                                plan.name === "Dragon Buff Plan" ? "https://billing.creepercastle.in/products/minecraft-hosting/dragon-buff-plan" :
-                                "https://billing.creepercastle.in/products/minecraft-hosting/"
-                              }
-                              target="_blank" 
-                              rel="noopener noreferrer"
+                        {!plan.isCustom ? (
+                          <div className="mt-6 space-y-2">
+                            <Button
+                              className="w-full minecraft-btn"
+                              onClick={() => {
+                                const id = `minecraft-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`;
+                                addItem({ id, name: plan.name, category: "Minecraft", price: plan.price as number, ram: plan.ram });
+                              }}
+                              disabled={items.some(i => i.id === `minecraft-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`)}
                             >
-                              Buy Now
-                            </a>
-                          ) : (
-                            <a 
-                              href="https://discord.gg/RuQ9neH56S" 
-                              target="_blank" 
+                              {items.some(i => i.id === `minecraft-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`)
+                                ? <><ShoppingCart className="h-4 w-4 mr-2" /> In Cart</>
+                                : <><ShoppingCart className="h-4 w-4 mr-2" /> Add to Cart</>
+                              }
+                            </Button>
+                          </div>
+                        ) : (
+                          <Button className="w-full minecraft-btn mt-6" asChild>
+                            <a
+                              href="https://discord.gg/RuQ9neH56S"
+                              target="_blank"
                               rel="noopener noreferrer"
                               className="flex items-center justify-center gap-2"
                             >
                               <MessageCircle className="h-5 w-5" /> Join Our Discord
                             </a>
-                          )}
-                        </Button>
+                          </Button>
+                        )}
                       </CardContent>
                     </Card>
                   </motion.div>

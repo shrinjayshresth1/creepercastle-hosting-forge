@@ -4,8 +4,9 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, Server, Cpu, Zap, Shield, HardDrive, Globe, Sparkles, Crown, Rocket } from "lucide-react";
+import { Check, Server, Cpu, Zap, Shield, HardDrive, Globe, Sparkles, Crown, Rocket, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
+import { useCart } from "@/contexts/CartContext";
 
 const vpsPlans = [
   {
@@ -120,6 +121,8 @@ const vpsPlans = [
 ];
 
 const VPSPlans = () => {
+  const { addItem, items } = useCart();
+  const parsePrice = (str: string) => parseInt(str.replace(/[₹,]/g, ''), 10) || 0;
   const features = [
     {
       icon: <Cpu className="w-6 h-6" />,
@@ -485,30 +488,39 @@ const VPSPlans = () => {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
-                          <Button 
-                            className={`w-full font-bold py-6 text-base shadow-xl transition-all duration-300 ${
-                              plan.highlighted
-                                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white shadow-cyan-500/50 hover:shadow-cyan-600/60'
-                                : 'bg-gradient-to-r from-creeper/90 to-creeper hover:from-creeper hover:to-creeper/90 text-navy-dark shadow-creeper/50'
-                            }`}
-                            asChild
-                          >
-                            <a href={plan.buyLink} target="_blank" rel="noopener noreferrer">
+                          {plan.isCustom ? (
+                            <Button
+                              className="w-full font-bold py-6 text-base shadow-xl transition-all duration-300 bg-gradient-to-r from-creeper/90 to-creeper hover:from-creeper hover:to-creeper/90 text-navy-dark shadow-creeper/50"
+                              asChild
+                            >
+                              <a href={plan.buyLink} target="_blank" rel="noopener noreferrer">
+                                <span className="flex items-center justify-center gap-2">
+                                  <Sparkles className="w-4 h-4" />
+                                  Contact Us
+                                </span>
+                              </a>
+                            </Button>
+                          ) : (
+                            <Button
+                              className={`w-full font-bold py-6 text-base shadow-xl transition-all duration-300 ${
+                                plan.highlighted
+                                  ? 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white shadow-cyan-500/50 hover:shadow-cyan-600/60'
+                                  : 'bg-gradient-to-r from-creeper/90 to-creeper hover:from-creeper hover:to-creeper/90 text-navy-dark shadow-creeper/50'
+                              }`}
+                              onClick={() => {
+                                const id = `vps-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`;
+                                addItem({ id, name: plan.name, category: "VPS", price: parsePrice(plan.price) });
+                              }}
+                              disabled={items.some(i => i.id === `vps-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`)}
+                            >
                               <span className="flex items-center justify-center gap-2">
-                                {plan.isCustom ? (
-                                  <>
-                                    <Sparkles className="w-4 h-4" />
-                                    Contact Us
-                                  </>
-                                ) : (
-                                  <>
-                                    <Rocket className="w-4 h-4" />
-                                    Get Started
-                                  </>
-                                )}
+                                {items.some(i => i.id === `vps-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`)
+                                  ? <><ShoppingCart className="w-4 h-4" /> In Cart</>
+                                  : <><ShoppingCart className="w-4 h-4" /> Add to Cart</>
+                                }
                               </span>
-                            </a>
-                          </Button>
+                            </Button>
+                          )}
                         </motion.div>
                       </div>
                     </Card>

@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import BreadcrumbStructuredData from "@/components/BreadcrumbStructuredData";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { CartProvider } from "@/contexts/CartContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import Contact from "./pages/Contact";
@@ -42,6 +43,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
+            <CartProvider>
             <BreadcrumbStructuredData />
             <Routes>
               <Route path="/" element={<Index />} />
@@ -96,6 +98,7 @@ const App = () => (
               <Route path="/partners" element={<Partners />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+            </CartProvider>
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>

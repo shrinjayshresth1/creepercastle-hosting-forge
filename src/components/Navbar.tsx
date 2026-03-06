@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Menu, X, Store, ChevronDown, Server, MapPin, Building2, Gamepad2, Bot, Monitor, Zap, ExternalLink, LogIn, User, LogOut, LayoutDashboard } from "lucide-react";
+import { CartDrawer } from "@/components/CartDrawer";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -182,6 +183,7 @@ const Navbar = () => {
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+            <CartDrawer />
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex items-center gap-2 text-sm text-gray-300 hover:text-white px-3 py-2 rounded-lg hover:bg-white/[0.06] transition-all duration-200 focus:outline-none">

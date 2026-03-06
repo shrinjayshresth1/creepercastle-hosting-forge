@@ -4,10 +4,13 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Check, Zap, Shield, Database, HardDrive, Cpu, Clock, TrendingUp, Award, Sparkles } from 'lucide-react';
+import { Check, Zap, Shield, Database, HardDrive, Cpu, Clock, TrendingUp, Award, Sparkles, ShoppingCart } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useCart } from '@/contexts/CartContext';
 
 const PerformancePlans = () => {
+  const { addItem, items } = useCart();
+  const parsePrice = (str: string) => parseInt(str.replace(/[₹,]/g, ''), 10) || 0;
   // Comprehensive structured data for Performance hosting
   const performanceStructuredData = {
     "@context": "https://schema.org",
@@ -708,11 +711,16 @@ const PerformancePlans = () => {
                       <CardFooter>
                         <Button 
                           className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300"
-                          asChild
+                          onClick={() => {
+                            const id = `performance-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`;
+                            addItem({ id, name: plan.name, category: "Performance Minecraft", price: parsePrice(plan.price), ram: plan.ram });
+                          }}
+                          disabled={items.some(i => i.id === `performance-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`)}
                         >
-                          <a href={plan.link} target="_blank" rel="noopener noreferrer">
-                            Get Started Now
-                          </a>
+                          {items.some(i => i.id === `performance-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`)
+                            ? <><ShoppingCart className="w-4 h-4 mr-2" /> In Cart</>
+                            : <><ShoppingCart className="w-4 h-4 mr-2" /> Add to Cart</>
+                          }
                         </Button>
                       </CardFooter>
                     </Card>

@@ -35,7 +35,7 @@ export default function Login() {
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
 
-  const from = (location.state as { from?: { pathname: string } })?.from?.pathname ?? "/dashboard";
+  const from = (location.state as { from?: { pathname: string } })?.from?.pathname ?? "/";
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),

@@ -3,8 +3,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, Bot } from "lucide-react";
+import { Check, Bot, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
+import { useCart } from "@/contexts/CartContext";
 
 const discordBotPlans = [
   {
@@ -55,6 +56,7 @@ const discordBotPlans = [
 ];
 
 const DiscordBotPlans = () => {
+  const { addItem, items } = useCart();
   return (
     <>
       <Helmet>
@@ -224,14 +226,18 @@ const DiscordBotPlans = () => {
                             </ul>
                           </div>
                           
-                          <Button className="w-full minecraft-btn mt-6" asChild>
-                            <a 
-                              href={plan.buyLink}
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                            >
-                              Buy Now - ₹{plan.price}/month
-                            </a>
+                          <Button
+                            className="w-full minecraft-btn mt-6"
+                            onClick={() => {
+                              const id = `discord-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`;
+                              addItem({ id, name: plan.name, category: "Discord Bot", price: plan.price });
+                            }}
+                            disabled={items.some(i => i.id === `discord-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`)}
+                          >
+                            {items.some(i => i.id === `discord-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`)
+                              ? <><ShoppingCart className="h-4 w-4 mr-2" /> In Cart</>
+                              : <><ShoppingCart className="h-4 w-4 mr-2" /> Add to Cart — ₹{plan.price}/month</>
+                            }
                           </Button>
                         </div>
                       </CardContent>
