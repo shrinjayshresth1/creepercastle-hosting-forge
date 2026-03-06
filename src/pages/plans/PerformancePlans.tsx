@@ -7,10 +7,12 @@ import { Badge } from '@/components/ui/badge';
 import { Check, Zap, Shield, Database, HardDrive, Cpu, Clock, TrendingUp, Award, Sparkles, ShoppingCart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCart } from '@/contexts/CartContext';
+import { useProducts } from '@/hooks/useProducts';
 
 const PerformancePlans = () => {
   const { addItem, items } = useCart();
-  const parsePrice = (str: string) => parseInt(str.replace(/[₹,]/g, ''), 10) || 0;
+  const { products: plans, loading: plansLoading } = useProducts("performance");
+  const parsePrice = (n: number | null) => n ?? 0;
   // Comprehensive structured data for Performance hosting
   const performanceStructuredData = {
     "@context": "https://schema.org",
@@ -60,81 +62,7 @@ const PerformancePlans = () => {
     ]
   };
 
-  const plans = [
-    {
-      name: 'Amberheart',
-      price: '₹299',
-      period: '/month',
-      description: 'Perfect for small communities',
-      ram: '3 GB',
-      cpu: 'Infinite',
-      storage: '10 GB SSD',
-      ports: '2 Additional Ports',
-      databases: '2 Databases',
-      backups: '2 Backups',
-      location: 'Mumbai, India',
-      ddos: 'Unhittable DDoS Protection',
-      link: 'https://billing.creepercastle.in/products/minecraft-performance/amberheart',
-      popular: false,
-      color: 'from-amber-500/20 to-orange-600/20',
-      borderColor: 'border-amber-500/40',
-    },
-    {
-      name: 'Obsidian Crest',
-      price: '₹532',
-      period: '/month',
-      description: 'Ideal for growing servers',
-      ram: '6 GB',
-      cpu: 'Infinite',
-      storage: '20 GB SSD',
-      ports: '4 Additional Ports',
-      databases: '4 Databases',
-      backups: '4 Backups',
-      location: 'Mumbai, India',
-      ddos: 'Unhittable DDoS Protection',
-      link: 'https://billing.creepercastle.in/products/minecraft-performance/obsidian-crest',
-      popular: true,
-      color: 'from-amber-400/30 to-orange-500/30',
-      borderColor: 'border-amber-400/60',
-    },
-    {
-      name: 'Dragon Forge',
-      price: '₹987',
-      period: '/month',
-      description: 'Built for large communities',
-      ram: '12 GB',
-      cpu: 'Infinite',
-      storage: '40 GB SSD',
-      ports: '8 Additional Ports',
-      databases: '8 Databases',
-      backups: '8 Backups',
-      location: 'Mumbai, India',
-      ddos: 'Unhittable DDoS Protection',
-      link: 'https://billing.creepercastle.in/products/minecraft-performance/dragonforge',
-      popular: false,
-      color: 'from-amber-600/20 to-orange-700/20',
-      borderColor: 'border-amber-600/40',
-    },
-    {
-      name: 'Witherfall',
-      price: '₹1762',
-      period: '/month',
-      description: 'Ultimate performance powerhouse',
-      ram: '24 GB',
-      cpu: 'Infinite',
-      storage: '80 GB SSD',
-      ports: '16 Additional Ports',
-      databases: '16 Databases',
-      backups: '16 Backups',
-      location: 'Mumbai, India',
-      ddos: 'Unhittable DDoS Protection',
-      link: 'https://billing.creepercastle.in/products/minecraft-performance/witherfall',
-      popular: false,
-      color: 'from-amber-700/20 to-orange-800/20',
-      borderColor: 'border-amber-700/40',
-    },
-  ];
-
+  // plans & plansLoading come from useProducts("performance") hook above
   const features = [
     {
       icon: <Cpu className="w-6 h-6" />,
@@ -643,6 +571,9 @@ const PerformancePlans = () => {
                 </p>
               </motion.div>
 
+              {plansLoading && (
+                <div className="text-center py-16 text-gray-400">Loading plans…</div>
+              )}
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
                 {plans.map((plan, index) => (
                   <motion.div
@@ -653,7 +584,7 @@ const PerformancePlans = () => {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     className="relative"
                   >
-                    {plan.popular && (
+                    {plan.highlighted && (
                       <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
                         <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-4 py-1 shadow-lg">
                           Most Popular
@@ -661,49 +592,49 @@ const PerformancePlans = () => {
                       </div>
                     )}
                     
-                    <Card className={`h-full bg-gradient-to-br ${plan.color} backdrop-blur-sm border-2 ${plan.borderColor} hover:border-amber-400/80 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-105 ${plan.popular ? 'ring-2 ring-amber-400/50' : ''}`}>
+                    <Card className={`h-full bg-gradient-to-br from-amber-500/20 to-orange-600/20 backdrop-blur-sm border-2 border-amber-500/40 hover:border-amber-400/80 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-105 ${plan.highlighted ? 'ring-2 ring-amber-400/50' : ''}`}>
                       <CardHeader className="pb-4">
                         <CardTitle className="text-2xl text-white flex items-center gap-2">
                           {plan.name}
-                          {plan.popular && <Sparkles className="w-5 h-5 text-amber-400" />}
+                          {plan.highlighted && <Sparkles className="w-5 h-5 text-amber-400" />}
                         </CardTitle>
                         <CardDescription className="text-gray-300">{plan.description}</CardDescription>
                       </CardHeader>
                       
                       <CardContent className="space-y-4 pb-4">
                         <div className="flex items-baseline gap-1">
-                          <span className="text-4xl font-bold text-amber-400">{plan.price}</span>
-                          <span className="text-gray-400">{plan.period}</span>
+                          <span className="text-4xl font-bold text-amber-400">₹{plan.price}</span>
+                          <span className="text-gray-400">/month</span>
                         </div>
                         
                         <div className="space-y-3 text-sm">
                           <div className="flex items-center gap-2 text-gray-200">
                             <Database className="w-4 h-4 text-creeper" />
-                            <span className="font-semibold">{plan.ram}</span> RAM
+                            <span className="font-semibold">{plan.specs?.ram}</span> RAM
                           </div>
                           <div className="flex items-center gap-2 text-gray-200">
                             <Cpu className="w-4 h-4 text-amber-400" />
-                            <span className="font-semibold">{plan.cpu}</span> CPU Power
+                            <span className="font-semibold">{plan.specs?.cpu}</span> CPU Power
                           </div>
                           <div className="flex items-center gap-2 text-gray-200">
                             <HardDrive className="w-4 h-4 text-blue-400" />
-                            <span className="font-semibold">{plan.storage}</span>
+                            <span className="font-semibold">{plan.specs?.storage}</span>
                           </div>
                           <div className="flex items-center gap-2 text-gray-200">
                             <Check className="w-4 h-4 text-creeper" />
-                            {plan.ports}
+                            {plan.specs?.ports}
                           </div>
                           <div className="flex items-center gap-2 text-gray-200">
                             <Check className="w-4 h-4 text-creeper" />
-                            {plan.databases}
+                            {plan.specs?.databases}
                           </div>
                           <div className="flex items-center gap-2 text-gray-200">
                             <Check className="w-4 h-4 text-creeper" />
-                            {plan.backups}
+                            {plan.specs?.backups}
                           </div>
                           <div className="flex items-center gap-2 text-gray-200">
                             <Shield className="w-4 h-4 text-purple-400" />
-                            {plan.ddos}
+                            {plan.specs?.ddos}
                           </div>
                         </div>
                       </CardContent>
@@ -713,7 +644,7 @@ const PerformancePlans = () => {
                           className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300"
                           onClick={() => {
                             const id = `performance-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`;
-                            addItem({ id, name: plan.name, category: "Performance Minecraft", price: parsePrice(plan.price), ram: plan.ram });
+                            addItem({ id, name: plan.name, category: "Performance Minecraft", price: plan.price ?? 0, ram: plan.specs?.ram });
                           }}
                           disabled={items.some(i => i.id === `performance-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`)}
                         >

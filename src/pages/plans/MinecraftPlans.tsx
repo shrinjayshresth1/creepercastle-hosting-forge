@@ -7,8 +7,9 @@ import { Check, HelpCircle, Server, Infinity as InfinityIcon, MessageCircle, Sho
 import { motion } from "framer-motion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useCart } from "@/contexts/CartContext";
+import { useProducts } from "@/hooks/useProducts";
 
-const minecraftPlans = [
+const _PLACEHOLDER_minecraftPlans_START = [
   {
     name: "Redstone Power Plan",
     price: 99,
@@ -192,9 +193,11 @@ const minecraftPlans = [
     highlighted: false,
   },
 ];
+// ↑ DELETED — data now comes from MongoDB via useProducts hook
 
 const MinecraftPlans = () => {
   const { addItem, items } = useCart();
+  const { products: minecraftPlans, loading: plansLoading } = useProducts("minecraft");
   // Enhanced JSON-LD structured data for better SEO
   const minecraftHostingStructuredData = {
     "@context": "https://schema.org",
@@ -218,8 +221,8 @@ const MinecraftPlans = () => {
     "offers": minecraftPlans.filter(plan => plan.price).map((plan, index) => ({
       "@type": "Offer",
       "name": plan.name,
-      "description": `${plan.ram} RAM, ${plan.cpu}, ${plan.storage} storage Minecraft hosting plan with ${plan.ddosProtection}`,
-      "price": plan.price.toString(),
+      "description": `${plan.specs?.ram} RAM, ${plan.specs?.cpu}, ${plan.specs?.storage} storage Minecraft hosting plan with ${plan.specs?.ddosProtection}`,
+      "price": (plan.price ?? 0).toString(),
       "priceCurrency": "INR",
       "availability": "https://schema.org/InStock",
       "validFrom": "2024-01-01",
@@ -227,7 +230,7 @@ const MinecraftPlans = () => {
       "itemOffered": {
         "@type": "Service",
         "name": plan.name,
-        "description": `Minecraft server hosting with ${plan.ram} RAM and ${plan.storage} storage`
+        "description": `Minecraft server hosting with ${plan.specs?.ram} RAM and ${plan.specs?.storage} storage`
       }
     })),
     "hasOfferCatalog": {
@@ -239,7 +242,7 @@ const MinecraftPlans = () => {
         "itemOffered": {
           "@type": "Service",
           "name": plan.name,
-          "description": `${plan.ram} RAM Minecraft hosting plan`
+          "description": `${plan.specs?.ram} RAM Minecraft hosting plan`
         },
         "price": plan.price.toString(),
         "priceCurrency": "INR"
@@ -582,6 +585,9 @@ const MinecraftPlans = () => {
                 </motion.p>
               </div>
               
+              {plansLoading && (
+                <div className="text-center py-16 text-gray-400">Loading plans…</div>
+              )}
               <motion.div 
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                 variants={containerVariants}
@@ -619,11 +625,11 @@ const MinecraftPlans = () => {
                         </div>
                         <CardDescription className="text-gray-400 mt-2">
                           {plan.isCustom ? "For large networks & special requirements" :
-                           plan.ram === "2GB" ? "Perfect for small friend groups" : 
-                           plan.ram === "4GB" ? "Ideal for growing communities" : 
-                           plan.ram === "6GB" ? "For established servers" :
-                           plan.ram === "8GB" ? "For medium networks" :
-                           plan.ram === "10GB" ? "For large networks" :
+                           plan.specs?.ram === "2GB" ? "Perfect for small friend groups" : 
+                           plan.specs?.ram === "4GB" ? "Ideal for growing communities" : 
+                           plan.specs?.ram === "6GB" ? "For established servers" :
+                           plan.specs?.ram === "8GB" ? "For medium networks" :
+                           plan.specs?.ram === "10GB" ? "For large networks" :
                            "For your Minecraft community"}
                         </CardDescription>
                       </CardHeader>
@@ -633,27 +639,27 @@ const MinecraftPlans = () => {
                             <ul className="space-y-2">
                               <li className="flex justify-between">
                                 <span className="text-gray-400">RAM</span>
-                                <span className="font-medium text-creeper">{plan.ram}</span>
+                                <span className="font-medium text-creeper">{plan.specs?.ram}</span>
                               </li>
                               <li className="flex justify-between">
                                 <span className="text-gray-400">CPU</span>
-                                <span className="font-medium text-creeper">{plan.cpu}</span>
+                                <span className="font-medium text-creeper">{plan.specs?.cpu}</span>
                               </li>
                               <li className="flex justify-between">
                                 <span className="text-gray-400">Storage</span>
-                                <span className="font-medium text-creeper">{plan.storage}</span>
+                                <span className="font-medium text-creeper">{plan.specs?.storage}</span>
                               </li>
                               <li className="flex justify-between">
                                 <span className="text-gray-400">Ports</span>
-                                <span className="font-medium text-creeper">{plan.additionalPorts}</span>
+                                <span className="font-medium text-creeper">{plan.specs?.additionalPorts}</span>
                               </li>
                               <li className="flex justify-between">
                                 <span className="text-gray-400">Database</span>
-                                <span className="font-medium text-creeper">{plan.databaseSpace}</span>
+                                <span className="font-medium text-creeper">{plan.specs?.databaseSpace}</span>
                               </li>
                               <li className="flex justify-between">
                                 <span className="text-gray-400">Backups</span>
-                                <span className="font-medium text-creeper">{plan.backupsLimit}</span>
+                                <span className="font-medium text-creeper">{plan.specs?.backupsLimit}</span>
                               </li>
                               <li className="flex justify-between items-start">
                                 <span className="text-gray-400">Locations</span>
@@ -677,7 +683,7 @@ const MinecraftPlans = () => {
                                     </Tooltip>
                                   </TooltipProvider>
                                 </div>
-                                <span className="font-medium text-creeper">{plan.ddosProtection}</span>
+                                <span className="font-medium text-creeper">{plan.specs?.ddosProtection}</span>
                               </li>
                             </ul>
                           </div>
@@ -701,7 +707,7 @@ const MinecraftPlans = () => {
                               className="w-full minecraft-btn"
                               onClick={() => {
                                 const id = `minecraft-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`;
-                                addItem({ id, name: plan.name, category: "Minecraft", price: plan.price as number, ram: plan.ram });
+                                addItem({ id, name: plan.name, category: "Minecraft", price: plan.price as number, ram: plan.specs?.ram });
                               }}
                               disabled={items.some(i => i.id === `minecraft-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`)}
                             >

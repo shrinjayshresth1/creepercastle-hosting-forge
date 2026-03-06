@@ -6,6 +6,7 @@ import { connectDB } from "./config/db";
 import authRouter from "./routes/auth";
 import kycRouter from "./routes/kyc";
 import paymentRouter from "./routes/payment";
+import productsRouter from "./routes/products";
 
 const app = express();
 const PORT = process.env.PORT ?? 5000;
@@ -50,6 +51,7 @@ app.get("/health", (_req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/kyc", kycRouter);
 app.use("/api/payment", paymentRouter);
+app.use("/api/products", productsRouter);
 
 // ─── 404 handler ──────────────────────────────────────────────────────────────
 app.use((_req, res) => {

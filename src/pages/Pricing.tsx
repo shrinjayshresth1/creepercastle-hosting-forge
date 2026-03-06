@@ -257,30 +257,22 @@ const PricingPage = () => {
                       <TableCell className="border-t border-gray-800"></TableCell>
                       <TableCell className="border-t border-gray-800 text-center py-4">
                         <Button className="minecraft-btn" asChild>
-                          <a href="https://billing.creepercastle.in/index.php?rp=/store/minecraft-performance-servers" target="_blank" rel="noopener noreferrer">
-                            Get Started
-                          </a>
+                          <a href="/plans/performance">Get Started</a>
                         </Button>
                       </TableCell>
                       <TableCell className="border-t border-gray-800 text-center py-4">
                         <Button className="minecraft-btn" asChild>
-                          <a href="https://billing.creepercastle.in/index.php?rp=/store/minecraft-performance-servers" target="_blank" rel="noopener noreferrer">
-                            Get Started
-                          </a>
+                          <a href="/plans/performance">Get Started</a>
                         </Button>
                       </TableCell>
                       <TableCell className="border-t border-gray-800 text-center py-4">
                         <Button className="minecraft-btn" asChild>
-                          <a href="https://billing.creepercastle.in/index.php?rp=/store/minecraft-performance-servers" target="_blank" rel="noopener noreferrer">
-                            Get Started
-                          </a>
+                          <a href="/plans/performance">Get Started</a>
                         </Button>
                       </TableCell>
                       <TableCell className="border-t border-gray-800 text-center py-4">
                         <Button className="minecraft-btn" asChild>
-                          <a href="https://billing.creepercastle.in/index.php?rp=/store/vps-hosting" target="_blank" rel="noopener noreferrer">
-                            Get Started
-                          </a>
+                          <a href="/plans/vps">Get Started</a>
                         </Button>
                       </TableCell>
                     </TableRow>

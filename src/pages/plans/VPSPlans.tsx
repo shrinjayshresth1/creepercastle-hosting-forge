@@ -7,122 +7,13 @@ import { Badge } from "@/components/ui/badge";
 import { Check, Server, Cpu, Zap, Shield, HardDrive, Globe, Sparkles, Crown, Rocket, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCart } from "@/contexts/CartContext";
+import { useProducts } from "@/hooks/useProducts";
 
-const vpsPlans = [
-  {
-    name: "Creeper Mini",
-    price: "₹199",
-    logo: "/lovable-uploads/2e0d644d-6f7e-43e0-93e8-2efabb828007.png",
-    specs: {
-      cpu: "Intel Platinum 8168 💎",
-      cores: "2V Cores 🚀",
-      ram: "4 GB DDR4 ECC RAM 🪄",
-      storage: "20 GB NVMe Storage🪄",
-      network: "Upto 1Gbps network speed🛜",
-      location: "India, Delhi🚩",
-      ddos: "CreeperCastle DDoS Protection🛡️",
-      mitigation: "17 Tbps Smart MITIGATION🛡️",
-      rdns: "RDNS Facility Available✅"
-    },
-    buyLink: "https://billing.creepercastle.in/products/vps-hosting/creeper-mini",
-    highlighted: false
-  },
-  {
-    name: "CreeperCastle Knight",
-    price: "₹399",
-    logo: "/lovable-uploads/92e056f5-c85f-4f06-9432-7c5ca32fe8b2.png",
-    specs: {
-      cpu: "Intel Platinum 8168 💎",
-      cores: "4V Cores 🚀",
-      ram: "8 GB DDR4 ECC RAM 🪄",
-      storage: "40 GB NVMe Storage🪄",
-      network: "Upto 1Gbps network speed🛜",
-      location: "India, Delhi🚩",
-      ddos: "CreeperCastle DDoS Protection🛡️",
-      mitigation: "17 Tbps Smart MITIGATION🛡️",
-      rdns: "RDNS Facility Available✅"
-    },
-    buyLink: "https://billing.creepercastle.in/products/vps-hosting/creepercastle-knight",
-    highlighted: true
-  },
-  {
-    name: "CreeperCastle Titan",
-    price: "₹699",
-    logo: "/lovable-uploads/592d5824-5311-47bb-beb0-5aae9ff5c280.png",
-    specs: {
-      cpu: "Intel Platinum 8168 💎",
-      cores: "6V Cores 🚀",
-      ram: "16 GB DDR4 ECC RAM 🪄",
-      storage: "60 GB NVMe Storage🪄",
-      network: "Upto 1Gbps network speed🛜",
-      location: "India, Delhi🚩",
-      ddos: "CreeperCastle DDoS Protection🛡️",
-      mitigation: "17 Tbps Smart MITIGATION🛡️",
-      rdns: "RDNS Facility Available✅"
-    },
-    buyLink: "https://billing.creepercastle.in/products/vps-hosting/creepercastle-titan",
-    highlighted: false
-  },
-  {
-    name: "CreeperCastle Guardian",
-    price: "₹1,199",
-    logo: "/lovable-uploads/102f77a4-d71f-456c-b542-1f98a55eb506.png",
-    specs: {
-      cpu: "Intel Platinum 8168 💎",
-      cores: "10V Cores 🚀",
-      ram: "32 GB DDR4 ECC RAM 🪄",
-      storage: "100 GB NVMe Storage🪄",
-      network: "Upto 1Gbps network speed🛜",
-      location: "India, Delhi🚩",
-      ddos: "CreeperCastle DDoS Protection🛡️",
-      mitigation: "17 Tbps Smart MITIGATION🛡️",
-      rdns: "RDNS Facility Available✅"
-    },
-    buyLink: "https://billing.creepercastle.in/products/vps-hosting/creepercastle-guardian",
-    highlighted: false
-  },
-  {
-    name: "CreeperCastle Overlord",
-    price: "₹2,099",
-    logo: "/lovable-uploads/c78b0c32-1019-4b21-a48b-1581857db978.png",
-    specs: {
-      cpu: "Intel Platinum 8168 💎",
-      cores: "20V Cores 🚀",
-      ram: "64 GB DDR4 ECC RAM 🪄",
-      storage: "200 GB NVMe Storage🪄",
-      network: "Upto 1Gbps network speed🛜",
-      location: "India, Delhi🚩",
-      ddos: "CreeperCastle DDoS Protection🛡️",
-      mitigation: "17 Tbps Smart MITIGATION🛡️",
-      rdns: "RDNS Facility Available✅"
-    },
-    buyLink: "https://billing.creepercastle.in/products/vps-hosting/creepercastle-overlord",
-    highlighted: false
-  },
-  {
-    name: "Custom VPS Plan",
-    price: "Custom",
-    logo: "/lovable-uploads/a5ede7d4-e1bf-4925-84dd-4b075648dc11.png",
-    specs: {
-      cpu: "Intel Platinum 8168 (Custom) 💎",
-      cores: "Custom Cores 🚀",
-      ram: "Custom RAM Configuration 🪄",
-      storage: "Flexible Storage Options 🪄",
-      network: "Dedicated Bandwidth 🛜",
-      location: "Multiple Locations Available 🚩",
-      ddos: "Enterprise DDoS Protection 🛡️",
-      mitigation: "Advanced Security 🛡️",
-      rdns: "Full Management Support ✅"
-    },
-    buyLink: "https://discord.gg/creepercastle",
-    highlighted: false,
-    isCustom: true
-  }
-];
+// vpsPlans data deleted — now served from MongoDB via /api/products?category=vps
 
 const VPSPlans = () => {
   const { addItem, items } = useCart();
-  const parsePrice = (str: string) => parseInt(str.replace(/[₹,]/g, ''), 10) || 0;
+  const { products: vpsPlans, loading: plansLoading } = useProducts("vps");
   const features = [
     {
       icon: <Cpu className="w-6 h-6" />,
@@ -373,6 +264,9 @@ const VPSPlans = () => {
                 </p>
               </motion.div>
 
+              {plansLoading && (
+                <div className="text-center py-16 text-gray-400">Loading plans…</div>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                 {vpsPlans.map((plan, index) => (
                   <motion.div
@@ -437,7 +331,7 @@ const VPSPlans = () => {
                         >
                           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 to-blue-600/30 blur-2xl rounded-full" />
                           <img 
-                            src={plan.logo} 
+                            src={plan.logoUrl} 
                             alt={`${plan.name} logo`}
                             className="h-20 w-auto mx-auto relative z-10 drop-shadow-[0_0_20px_rgba(6,182,212,0.6)]"
                           />
@@ -454,7 +348,7 @@ const VPSPlans = () => {
                             className="text-5xl font-black text-white"
                             whileHover={{ scale: 1.1 }}
                           >
-                            {plan.price}
+                            {plan.isCustom ? 'Custom' : `₹${plan.price}`}
                           </motion.span>
                           <span className="text-lg text-gray-400 ml-2 font-medium">/month</span>
                         </div>
@@ -509,7 +403,7 @@ const VPSPlans = () => {
                               }`}
                               onClick={() => {
                                 const id = `vps-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`;
-                                addItem({ id, name: plan.name, category: "VPS", price: parsePrice(plan.price) });
+                                addItem({ id, name: plan.name, category: "VPS", price: plan.price ?? 0 });
                               }}
                               disabled={items.some(i => i.id === `vps-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`)}
                             >

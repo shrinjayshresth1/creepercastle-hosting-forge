@@ -4,99 +4,16 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, Server, Cpu, Zap, Shield, HardDrive, Globe, Sparkles, Crown, Rocket, Award, TrendingUp } from "lucide-react";
+import { Check, Server, Cpu, Zap, Shield, HardDrive, Globe, Sparkles, Crown, Rocket, Award, TrendingUp, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
+import { useCart } from "@/contexts/CartContext";
+import { useProducts } from "@/hooks/useProducts";
 
-const performanceVPSPlans = [
-  {
-    name: "The Creeper",
-    price: "₹399",
-    logo: "/lovable-uploads/2e0d644d-6f7e-43e0-93e8-2efabb828007.png",
-    specs: {
-      cpu: "AMD Ryzen 7 5700G 🔥",
-      cores: "1V Core 🚀",
-      ram: "4 GB DDR4 RAM 💎",
-      storage: "30 GB NVMe SSD 🪄",
-      bandwidth: "1 TB Bandwidth 🌐",
-      location: "India, Delhi 🚩",
-      ddos: "Unhittable DDoS Protection 🛡️",
-      network: "Up to 1Gbps Network Speed 🛜"
-    },
-    buyLink: "https://billing.creepercastle.in/products/ryzen-7-vps-hosting/the-creeper",
-    highlighted: false
-  },
-  {
-    name: "The Warden",
-    price: "₹799",
-    logo: "/lovable-uploads/92e056f5-c85f-4f06-9432-7c5ca32fe8b2.png",
-    specs: {
-      cpu: "AMD Ryzen 7 5700G 🔥",
-      cores: "2V Cores 🚀",
-      ram: "8 GB DDR4 RAM 💎",
-      storage: "60 GB NVMe SSD 🪄",
-      bandwidth: "2 TB Bandwidth 🌐",
-      location: "India, Delhi 🚩",
-      ddos: "Unhittable DDoS Protection 🛡️",
-      network: "Up to 1Gbps Network Speed 🛜"
-    },
-    buyLink: "https://billing.creepercastle.in/products/ryzen-7-vps-hosting/the-warden",
-    highlighted: true
-  },
-  {
-    name: "Wither Hulk",
-    price: "₹1,399",
-    logo: "/lovable-uploads/592d5824-5311-47bb-beb0-5aae9ff5c280.png",
-    specs: {
-      cpu: "AMD Ryzen 7 5700G 🔥",
-      cores: "4V Cores 🚀",
-      ram: "16 GB DDR4 RAM 💎",
-      storage: "120 GB NVMe Gen 4 SSD 🪄",
-      bandwidth: "4 TB Bandwidth 🌐",
-      location: "India, Delhi 🚩",
-      ddos: "Unhittable DDoS Protection 🛡️",
-      network: "Up to 1Gbps Network Speed 🛜"
-    },
-    buyLink: "https://billing.creepercastle.in/products/ryzen-7-vps-hosting/wither-hulk",
-    highlighted: false
-  },
-  {
-    name: "Ender Destroyer",
-    price: "₹2,499",
-    logo: "/lovable-uploads/102f77a4-d71f-456c-b542-1f98a55eb506.png",
-    specs: {
-      cpu: "AMD Ryzen 7 5700G 🔥",
-      cores: "6V Cores 🚀",
-      ram: "32 GB DDR4 RAM 💎",
-      storage: "240 GB NVMe SSD 🪄",
-      bandwidth: "Unmetered Bandwidth ♾️",
-      location: "India, Delhi 🚩",
-      ddos: "Unhittable DDoS Protection 🛡️",
-      network: "Up to 1Gbps Network Speed 🛜"
-    },
-    buyLink: "https://billing.creepercastle.in/products/ryzen-7-vps-hosting/ender-destroyer",
-    highlighted: false
-  },
-  {
-    name: "King of the Castle",
-    price: "₹3,899",
-    logo: "/lovable-uploads/c78b0c32-1019-4b21-a48b-1581857db978.png",
-    specs: {
-      cpu: "AMD Ryzen 7 5700G 🔥",
-      cores: "8V Cores 🚀",
-      ram: "64 GB DDR4 RAM 💎",
-      storage: "400 GB NVMe SSD 🪄",
-      bandwidth: "Unmetered Bandwidth ♾️",
-      location: "India, Delhi 🚩",
-      ddos: "Unhittable DDoS Protection 🛡️",
-      network: "Up to 1Gbps Network Speed 🛜"
-    },
-    buyLink: "https://billing.creepercastle.in/products/ryzen-7-vps-hosting/king-of-the-castle",
-    highlighted: false,
-    isKing: true
-  }
-];
+// performanceVPSPlans data deleted — now served from MongoDB via /api/products?category=performance-vps
 
 const PerformanceVPSPlans = () => {
+  const { addItem, items } = useCart();
+  const { products: performanceVPSPlans, loading: plansLoading } = useProducts("performance-vps");
   const features = [
     {
       icon: <Cpu className="w-6 h-6" />,
@@ -354,6 +271,7 @@ const PerformanceVPSPlans = () => {
                 </p>
               </motion.div>
 
+              {plansLoading && <div className="text-center py-16 text-gray-400">Loading plans…</div>}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                 {performanceVPSPlans.map((plan, index) => (
                   <motion.div
@@ -365,13 +283,13 @@ const PerformanceVPSPlans = () => {
                     className={plan.highlighted ? "lg:scale-105" : ""}
                   >
                     <Card className={`relative h-full flex flex-col backdrop-blur-sm transition-all duration-300 hover:shadow-2xl ${
-                      plan.isKing
+                      plan.badge === "Ultimate"
                         ? "bg-gradient-to-br from-amber-500/20 via-orange-600/20 to-amber-500/20 border-4 border-amber-500 hover:border-amber-400 shadow-2xl shadow-amber-500/40"
                         : plan.highlighted
                         ? "bg-gradient-to-br from-orange-500/15 via-amber-600/15 to-orange-500/15 border-2 border-orange-500/60 hover:border-orange-400 shadow-xl shadow-orange-500/30"
                         : "bg-gradient-to-br from-navy-dark/80 to-black/80 border border-amber-500/30 hover:border-amber-500/60 shadow-lg shadow-amber-500/20"
                     }`}>
-                      {plan.isKing && (
+                      {plan.badge === "Ultimate" && (
                         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
                           <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-6 py-2 text-sm font-bold shadow-xl border-2 border-amber-400 animate-pulse">
                             <Crown className="w-4 h-4 mr-1 inline" />
@@ -379,7 +297,7 @@ const PerformanceVPSPlans = () => {
                           </Badge>
                         </div>
                       )}
-                      {plan.highlighted && !plan.isKing && (
+                      {plan.highlighted && plan.badge !== "Ultimate" && (
                         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
                           <Badge className="bg-gradient-to-r from-orange-500 to-amber-600 text-white px-4 py-1 text-xs font-bold shadow-lg">
                             <Sparkles className="w-3 h-3 mr-1 inline" />
@@ -389,15 +307,15 @@ const PerformanceVPSPlans = () => {
                       )}
                       
                       <CardHeader className="text-center pb-4">
-                        {plan.isKing && (
+                        {plan.badge === "Ultimate" && (
                           <div className="w-20 h-20 mx-auto mb-4 flex items-center justify-center">
                             <Crown className="w-20 h-20 text-amber-400 drop-shadow-2xl" />
                           </div>
                         )}
-                        <CardTitle className={`text-3xl mb-3 ${plan.isKing ? 'text-amber-400 mt-2' : 'text-white mt-6'}`}>{plan.name}</CardTitle>
+                        <CardTitle className={`text-3xl mb-3 ${plan.badge === "Ultimate" ? 'text-amber-400 mt-2' : 'text-white mt-6'}`}>{plan.name}</CardTitle>
                         <div className="flex items-baseline justify-center gap-2">
-                          <span className={`text-5xl font-bold ${plan.isKing ? 'bg-gradient-to-r from-amber-400 to-orange-600 bg-clip-text text-transparent' : 'text-amber-400'}`}>
-                            {plan.price}
+                          <span className={`text-5xl font-bold ${plan.badge === "Ultimate" ? 'bg-gradient-to-r from-amber-400 to-orange-600 bg-clip-text text-transparent' : 'text-amber-400'}`}>
+                            {plan.isCustom ? 'Custom' : `₹${plan.price}`}
                           </span>
                           <span className="text-gray-400 text-lg">/month</span>
                         </div>
@@ -407,7 +325,7 @@ const PerformanceVPSPlans = () => {
                         <div className="space-y-3">
                           {Object.entries(plan.specs).map(([key, value]) => (
                             <div key={key} className="flex items-start gap-3 p-2 rounded-lg hover:bg-amber-500/10 transition-colors">
-                              <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${plan.isKing ? 'text-amber-400' : 'text-green-400'}`} />
+                              <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${plan.badge === "Ultimate" ? 'text-amber-400' : 'text-green-400'}`} />
                               <span className="text-gray-200 text-base">{value}</span>
                             </div>
                           ))}
@@ -415,18 +333,23 @@ const PerformanceVPSPlans = () => {
 
                         <Button 
                           className={`w-full mt-6 text-base font-bold py-6 transition-all duration-300 hover:scale-105 ${
-                            plan.isKing
+                            plan.badge === "Ultimate"
                               ? "bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white shadow-2xl shadow-amber-500/50 border-2 border-amber-400/50"
                               : plan.highlighted
                               ? "bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white shadow-xl shadow-orange-500/40"
                               : "bg-gradient-to-r from-amber-500/20 to-orange-600/20 hover:from-amber-500/30 hover:to-orange-600/30 text-white border border-amber-500/50 hover:border-amber-400"
                           }`}
-                          asChild
+                          onClick={() => {
+                            const id = `perf-vps-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`;
+                            addItem({ id, name: plan.name, category: "Performance VPS", price: plan.price ?? 0 });
+                          }}
+                          disabled={items.some(i => i.id === `perf-vps-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`)}
                         >
-                          <a href={plan.buyLink} target="_blank" rel="noopener noreferrer">
-                            <Rocket className="w-5 h-5 mr-2" />
-                            Get Started Now
-                          </a>
+                          {items.some(i => i.id === `perf-vps-${plan.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`) ? (
+                            <><ShoppingCart className="w-5 h-5 mr-2" /> In Cart</>
+                          ) : (
+                            <><ShoppingCart className="w-5 h-5 mr-2" /> Add to Cart</>
+                          )}
                         </Button>
                       </CardContent>
                     </Card>

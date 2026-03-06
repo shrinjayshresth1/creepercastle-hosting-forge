@@ -6,57 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Check, Bot, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCart } from "@/contexts/CartContext";
-
-const discordBotPlans = [
-  {
-    name: "Coder",
-    price: 22,
-    specs: {
-      ram: "512MB",
-      cpu: "100%",
-      storage: "2GB SSD",
-      ports: "2 Additional Ports",
-      backups: "2 Backup Limit",
-      databases: "2 Databases"
-    },
-    features: [
-      "24/7 Bot Hosting",
-      "SSH Access",
-      "Node.js & Python Support",
-      "Instant Setup",
-      "99.9% Uptime",
-      "Community Support"
-    ],
-    buyLink: "https://billing.creepercastle.in/products/discord-bot-hosting/coder"
-  },
-  {
-    name: "Developer",
-    price: 49,
-    specs: {
-      ram: "1GB",
-      cpu: "200%",
-      storage: "4GB SSD",
-      ports: "4 Additional Ports",
-      backups: "4 Backup Limit",
-      databases: "4 Databases"
-    },
-    features: [
-      "24/7 Bot Hosting",
-      "SSH Access",
-      "Node.js & Python Support",
-      "Instant Setup",
-      "99.9% Uptime",
-      "Priority Support",
-      "Advanced Monitoring",
-      "Custom Modules"
-    ],
-    highlighted: true,
-    buyLink: "https://billing.creepercastle.in/products/discord-bot-hosting/developer"
-  }
-];
+import { useProducts } from "@/hooks/useProducts";
 
 const DiscordBotPlans = () => {
   const { addItem, items } = useCart();
+  const { products: discordBotPlans, loading: plansLoading } = useProducts("discord-bot");
   return (
     <>
       <Helmet>
@@ -154,6 +108,7 @@ const DiscordBotPlans = () => {
                 </motion.p>
               </div>
               
+              {plansLoading && <div className="text-center py-16 text-gray-400">Loading plans…</div>}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 {discordBotPlans.map((plan, index) => (
                   <motion.div

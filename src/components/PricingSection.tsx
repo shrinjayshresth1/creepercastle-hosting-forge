@@ -15,7 +15,7 @@ const plans = [
     plugins: "Unlimited",
     features: [],
     mostPopular: false,
-    link: "https://billing.creepercastle.in/index.php?rp=/store/vps-hosting",
+    link: "/plans/vps",
     icon: <Server className="h-10 w-10 text-creeper mb-2" />
   },
   {
@@ -29,7 +29,7 @@ const plans = [
     plugins: "Unlimited",
     features: ["One-Click Plugin Installer", "Custom Domain", "99.9% Uptime", "24/7 Support", "Modpack Support"],
     mostPopular: true,
-    link: "https://billing.creepercastle.in/index.php?rp=/store/minecraft-performance-servers",
+    link: "/plans/performance",
     icon: <Server className="h-10 w-10 text-creeper mb-2" />
   },
   {
@@ -76,7 +76,7 @@ const PricingSection = () => {
                   <span className="text-gray-400">/month</span>
                 </div>
                 <Button className="w-full minecraft-btn rounded-md" asChild>
-                  <a href={plan.link} target="_blank" rel="noopener noreferrer">Get Started</a>
+                  <a href={plan.link}>Get Started</a>
                 </Button>
               </div>
               
