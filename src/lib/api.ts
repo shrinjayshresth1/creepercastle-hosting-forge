@@ -182,3 +182,33 @@ export function kycVerifyOtp(transactionId: string, otp: string) {
     body: JSON.stringify({ transactionId, otp }),
   });
 }
+
+// ─── Payment ──────────────────────────────────────────────────────────────────
+
+export interface CreateOrderResponse {
+  orderId: string;
+  paymentUrl: string;
+  sessionId: string;
+}
+
+export interface OrderStatusResponse {
+  orderId: string;
+  status: "created" | "pending" | "paid" | "failed" | "cancelled";
+  amount: number;
+  description: string;
+}
+
+/** Create a payment order and get the HDFC redirect URL */
+export function createOrder(body: { amount: number; description: string }) {
+  return request<CreateOrderResponse>("/api/payment/create-order", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+/** Poll payment status for a given orderId */
+export function getOrderStatus(orderId: string) {
+  return request<OrderStatusResponse>(
+    `/api/payment/status/${encodeURIComponent(orderId)}`
+  );
+}

@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import { connectDB } from "./config/db";
 import authRouter from "./routes/auth";
 import kycRouter from "./routes/kyc";
+import paymentRouter from "./routes/payment";
 
 const app = express();
 const PORT = process.env.PORT ?? 5000;
@@ -29,6 +30,13 @@ app.use(
   })
 );
 
+// ─── Raw body capture for HDFC webhook (must come before express.json) ─────────
+// The payment router's /webhook route also applies express.raw() but this ensures
+// the body stream is captured before the global JSON parser consumes it.
+app.use("/api/payment/webhook",
+  express.raw({ type: "*/*" }),
+);
+
 // ─── Body + cookie ────────────────────────────────────────────────────────────
 app.use(express.json());
 app.use(cookieParser());
@@ -41,6 +49,7 @@ app.get("/health", (_req, res) => {
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.use("/api/auth", authRouter);
 app.use("/api/kyc", kycRouter);
+app.use("/api/payment", paymentRouter);
 
 // ─── 404 handler ──────────────────────────────────────────────────────────────
 app.use((_req, res) => {

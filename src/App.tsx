@@ -29,6 +29,8 @@ import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import Checkout from "./pages/Checkout";
+import PaymentReturn from "./pages/PaymentReturn";
 
 const queryClient = new QueryClient();
 
@@ -64,6 +66,17 @@ const App = () => (
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/checkout"
+                element={
+                  <ProtectedRoute>
+                    <Checkout />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Payment return — public so HDFC redirect works even before re-auth */}
+              <Route path="/payment/return" element={<PaymentReturn />} />
 
               {/* Public routes */}
               <Route path="/contact" element={<Contact />} />
