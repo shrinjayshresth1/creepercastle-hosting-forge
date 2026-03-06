@@ -1,14 +1,18 @@
 #!/bin/bash
+# !! SECURITY WARNING !!
+# All secret values in this file have been replaced with CHANGE_ME placeholders.
+# NEVER commit real passwords to git. Edit these values only on the server itself.
 set -e
 
-SUDOPASS="6lLb713wmaGl"
+# CHANGE_ME: your sudo password (or use a sudoers NOPASSWD rule instead)
+SUDOPASS="CHANGE_ME"
 
 echo "=== Creating MongoDB admin user ==="
 mongosh admin --norc --quiet << 'MONGOEOF'
 try {
   db.createUser({
     user: "creeperAdmin",
-    pwd: "CrAdmin@2026!",
+    pwd: "CHANGE_ME_ADMIN_PASSWORD",
     roles: [{ role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase"]
   });
   print("Admin user created OK");
@@ -22,7 +26,7 @@ mongosh creepercastle --norc --quiet << 'MONGOEOF'
 try {
   db.createUser({
     user: "creeperApp",
-    pwd: "CrApp@2026!",
+    pwd: "CHANGE_ME_APP_PASSWORD",
     roles: [{ role: "readWrite", db: "creepercastle" }]
   });
   print("App user created OK");
@@ -44,6 +48,6 @@ sleep 3
 echo "$SUDOPASS" | sudo -S systemctl status mongod --no-pager | head -5
 
 echo "=== Verifying login with app credentials ==="
-mongosh "mongodb://creeperApp:CrApp%402026%21@127.0.0.1:27017/creepercastle" --norc --quiet --eval 'print("Auth login OK: " + db.getName())'
+mongosh "mongodb://creeperApp:CHANGE_ME_APP_PASSWORD_URLENCODED@127.0.0.1:27017/creepercastle" --norc --quiet --eval 'print("Auth login OK: " + db.getName())'
 
 echo "=== All done ==="

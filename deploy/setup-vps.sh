@@ -3,6 +3,10 @@
 # CreeperCastle — VPS setup script for new.creepercastle.cloud
 # Run as the 'advps' user on 103.124.208.13
 # Usage: bash setup-vps.sh
+#
+# !! SECURITY WARNING !!
+# All secret values in this file have been replaced with CHANGE_ME placeholders.
+# NEVER commit real credentials to git. Fill in values only on the server itself.
 # ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 
@@ -46,23 +50,26 @@ PORT=5000
 NODE_ENV=production
 
 # ─── MongoDB ──────────────────────────────────────────────────────────────────
-MONGODB_URI=mongodb+srv://shrinjayshresth_db_user:f3qehayXjH7mfgeJ@mycluster.kplyxx5.mongodb.net/creepercastle?appName=MyCluster
+# CHANGE_ME: replace with your actual MongoDB connection string
+MONGODB_URI=mongodb://127.0.0.1:27017/creepercastle
 
 # ─── JWT Secrets ──────────────────────────────────────────────────────────────
-ACCESS_TOKEN_SECRET=e6ce1744f5f660d0f9a6072499925d78005e7e2a99f85d05e333a70bac214a645db79fb13765223f5227d5939b5155d1279e289d01a49cc70a73bc2d0b31c675
-REFRESH_TOKEN_SECRET=3adda260045b361238a201e76832e403ec4c6ad364cd52978834c82e041a188f673d38bdf5124914732d5f4423414f3254b480fb03bc89244a108ddbfa814696
-STEP_TOKEN_SECRET=ffb295bb8deb767b406e5d14230d6766546cc8e963b0f858e1c78c95b287fc6720234b83d28cfe20c9f9ebdb08d364a57b6685142a635eeddf802df8cd5c7034
+# CHANGE_ME: generate with: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+ACCESS_TOKEN_SECRET=CHANGE_ME_64_BYTE_HEX
+REFRESH_TOKEN_SECRET=CHANGE_ME_64_BYTE_HEX
+STEP_TOKEN_SECRET=CHANGE_ME_64_BYTE_HEX
 
 # ─── SMTP ─────────────────────────────────────────────────────────────────────
-SMTP_HOST=mail.flexeere.net
+SMTP_HOST=CHANGE_ME
 SMTP_PORT=465
 SMTP_SECURE=true
-SMTP_USER=noreply@flexeere.net
-SMTP_PASS=73Hc0N6CKP1V
-SMTP_FROM=noreply@flexeere.net
+SMTP_USER=CHANGE_ME
+SMTP_PASS=CHANGE_ME
+SMTP_FROM=CHANGE_ME
 
 # ─── Fast2SMS ─────────────────────────────────────────────────────────────────
-FAST2SMS_API_KEY=zRpbiVCdIcODFgel2j4aquSMAoEUNYy6PvBH03ntfGW8JwX1skxbzjF9VBvfECcRGroQwh5At1e4uP0m
+# CHANGE_ME: get from fast2sms.com dashboard
+FAST2SMS_API_KEY=CHANGE_ME
 
 # ─── CORS ─────────────────────────────────────────────────────────────────────
 ALLOWED_ORIGINS=https://new.creepercastle.cloud,https://creepercastle.cloud
