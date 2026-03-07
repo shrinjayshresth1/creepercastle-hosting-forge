@@ -13,9 +13,9 @@ async function request<T>(
   options: RequestInit = {}
 ): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
+    ...options,
     headers: { "Content-Type": "application/json", ...options.headers },
     credentials: "include", // send httpOnly refresh-token cookie
-    ...options,
   });
 
   let body: unknown;
