@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Menu, X, Store, ChevronDown, Server, MapPin, Building2, Gamepad2, Bot, Monitor, Zap, ExternalLink, LogIn, User, LogOut, LayoutDashboard } from "lucide-react";
+import { Menu, X, ChevronDown, Server, MapPin, Building2, Gamepad2, Bot, Monitor, Zap, ExternalLink, LogIn, User, LogOut, LayoutDashboard } from "lucide-react";
 import { CartDrawer } from "@/components/CartDrawer";
 import {
   DropdownMenu,
@@ -243,15 +243,7 @@ const Navbar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
-            <a
-              href="https://billing.creepercastle.in"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm font-medium text-white bg-creeper hover:bg-creeper/90 px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-creeper/25"
-            >
-              <Store size={14} />
-              Store
-            </a>
+
             <Link
               to="/discord"
               className="flex items-center gap-2 text-sm font-medium text-white bg-violet-600 hover:bg-violet-500 px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-violet-500/25"
@@ -348,15 +340,7 @@ const Navbar = () => {
             </Link>
 
             <div className="pt-3 pb-2 grid grid-cols-2 gap-2 border-t border-white/[0.06] mt-2">
-              <a
-                href="https://billing.creepercastle.in"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 text-sm font-medium text-white bg-creeper hover:bg-creeper/90 px-4 py-2.5 rounded-xl transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                <Store size={14} /> Store
-              </a>
+
               <Link
                 to="/discord"
                 className="flex items-center justify-center gap-2 text-sm font-medium text-white bg-violet-600 hover:bg-violet-500 px-4 py-2.5 rounded-xl transition-colors"
