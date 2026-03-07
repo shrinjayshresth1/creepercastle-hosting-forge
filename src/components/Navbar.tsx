@@ -210,13 +210,38 @@ const Navbar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link
-                to="/login"
-                className="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white px-3 py-2 rounded-lg hover:bg-white/[0.06] transition-all duration-200"
-              >
-                <LogIn size={14} />
-                Sign In
-              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center gap-1.5 text-sm font-medium text-gray-300 hover:text-white px-3 py-2 rounded-lg hover:bg-white/[0.06] transition-all duration-200 focus:outline-none">
+                  <LogIn size={14} />
+                  Sign In
+                  <ChevronDown size={13} className="text-gray-500" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-[#0d1424]/98 backdrop-blur-2xl border border-white/[0.08] z-[10000] rounded-2xl shadow-2xl min-w-[200px] p-2 mt-1">
+                  <DropdownMenuItem className="rounded-xl p-0 focus:bg-transparent hover:bg-transparent">
+                    <Link to="/login" className="flex items-center gap-3 px-3 py-2.5 w-full rounded-xl hover:bg-white/[0.05] transition-colors">
+                      <LogIn size={15} className="text-creeper" />
+                      <span>
+                        <span className="block text-sm font-medium text-white">Client Area</span>
+                        <span className="block text-xs text-gray-400 mt-0.5">Manage billing & services</span>
+                      </span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="rounded-xl p-0 focus:bg-transparent hover:bg-transparent">
+                    <a
+                      href="https://console.creepercastle.in"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-3 py-2.5 w-full rounded-xl hover:bg-white/[0.05] transition-colors"
+                    >
+                      <Gamepad2 size={15} className="text-amber-400" />
+                      <span>
+                        <span className="block text-sm font-medium text-white">Gaming Console</span>
+                        <span className="block text-xs text-gray-400 mt-0.5">Manage your game servers</span>
+                      </span>
+                    </a>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
             <a
               href="https://billing.creepercastle.in"
@@ -356,13 +381,24 @@ const Navbar = () => {
                   </button>
                 </>
               ) : (
-                <Link
-                  to="/login"
-                  className="flex items-center justify-center gap-2 text-sm font-medium text-white border border-creeper/30 px-4 py-2.5 rounded-xl hover:bg-creeper/5 transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <LogIn size={14} /> Sign In
-                </Link>
+                <>
+                  <Link
+                    to="/login"
+                    className="flex items-center justify-center gap-2 text-sm font-medium text-white border border-creeper/30 px-4 py-2.5 rounded-xl hover:bg-creeper/5 transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <LogIn size={14} /> Sign In
+                  </Link>
+                  <a
+                    href="https://console.creepercastle.in"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 text-sm font-medium text-amber-400 border border-amber-400/30 px-4 py-2.5 rounded-xl hover:bg-amber-400/5 transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <Gamepad2 size={14} /> Gaming Console
+                  </a>
+                </>
               )}
             </div>
           </div>
