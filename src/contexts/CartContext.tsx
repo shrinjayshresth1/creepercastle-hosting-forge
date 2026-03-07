@@ -16,7 +16,7 @@ const COUPONS: Record<string, number> = {
   LAUNCH15:  15,
 };
 
-export const PLATFORM_FEE = 49;   // flat INR
+export const PLATFORM_FEE_PCT = 3;  // % of (transaction + GST)
 export const GST_RATE      = 0.18; // 18 %
 
 interface CartContextValue {
@@ -105,9 +105,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const subtotal  = items.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.quantity) || 1), 0);
   const discount  = Math.round(subtotal * couponPct / 100);
   const afterDiscount = subtotal - discount;
-  const platformFee   = items.length > 0 ? PLATFORM_FEE : 0;
-  const gst           = Math.round((afterDiscount + platformFee) * GST_RATE);
-  const grandTotal    = afterDiscount + platformFee + gst;
+  const gst           = items.length > 0 ? Math.round(afterDiscount * GST_RATE) : 0;
+  const platformFee   = items.length > 0 ? Math.round((afterDiscount + gst) * PLATFORM_FEE_PCT / 100) : 0;
+  const grandTotal    = afterDiscount + gst + platformFee;
 
   return (
     <CartContext.Provider value={{

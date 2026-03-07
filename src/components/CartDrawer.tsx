@@ -163,7 +163,7 @@ export function CartDrawer() {
                   </div>
                 )}
                 <div className="flex justify-between text-gray-400">
-                  <span>Platform fee</span>
+                  <span>Platform fee (3%)</span>
                   <span className="text-white">₹{platformFee}</span>
                 </div>
                 <div className="flex justify-between text-gray-400">
