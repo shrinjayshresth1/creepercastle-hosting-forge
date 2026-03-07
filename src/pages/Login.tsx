@@ -100,15 +100,7 @@ export default function Login() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex items-center justify-between">
-                      <FormLabel className="text-gray-300">Password</FormLabel>
-                      <Link
-                        to="/forgot-password"
-                        className="text-xs text-orange-400 hover:text-orange-300 transition-colors"
-                      >
-                        Reset Password
-                      </Link>
-                    </div>
+                    <FormLabel className="text-gray-300">Password</FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
@@ -128,6 +120,14 @@ export default function Login() {
                         </button>
                       </div>
                     </FormControl>
+                    <div className="flex justify-end">
+                      <Link
+                        to="/forgot-password"
+                        className="text-xs text-orange-400 hover:text-orange-300 transition-colors"
+                      >
+                        Reset Password
+                      </Link>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
