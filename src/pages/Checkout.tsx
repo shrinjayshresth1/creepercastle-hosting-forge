@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function Checkout() {
   const [searchParams] = useSearchParams();
-  const { user } = useAuth();
+  const { user, accessToken } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
@@ -30,9 +30,13 @@ export default function Checkout() {
   }
 
   async function handlePay() {
+    if (!accessToken) {
+      toast({ variant: "destructive", title: "Not logged in", description: "Please log in to continue." });
+      return;
+    }
     setLoading(true);
     try {
-      const { paymentUrl } = await createOrder({ amount, description });
+      const { paymentUrl } = await createOrder({ amount, description }, accessToken);
       // Full-page redirect to HDFC's hosted payment page
       window.location.href = paymentUrl;
     } catch (err: unknown) {

@@ -199,10 +199,11 @@ export interface OrderStatusResponse {
 }
 
 /** Create a payment order and get the HDFC redirect URL */
-export function createOrder(body: { amount: number; description: string }) {
+export function createOrder(body: { amount: number; description: string }, accessToken: string) {
   return request<CreateOrderResponse>("/api/payment/create-order", {
     method: "POST",
     body: JSON.stringify(body),
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
 }
 
