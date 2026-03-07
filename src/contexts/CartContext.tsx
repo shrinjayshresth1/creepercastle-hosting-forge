@@ -48,7 +48,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as CartItem[]) : [];
+      if (!raw) return [];
+      const parsed = JSON.parse(raw) as CartItem[];
+      return parsed.map(item => ({
+        ...item,
+        price:    (typeof item.price === 'number' && !isNaN(item.price))    ? item.price    : (Number(item.price) || 0),
+        quantity: (typeof item.quantity === 'number' && !isNaN(item.quantity) && item.quantity > 0) ? item.quantity : 1,
+      }));
     } catch { return []; }
   });
 
@@ -95,8 +101,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   function removeCoupon() { setCouponCode(""); }
 
   // ── Billing math ──────────────────────────────────────────────────────────
-  const count     = items.reduce((s, i) => s + i.quantity, 0);
-  const subtotal  = items.reduce((s, i) => s + i.price * i.quantity, 0);
+  const count     = items.reduce((s, i) => s + (Number(i.quantity) || 1), 0);
+  const subtotal  = items.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.quantity) || 1), 0);
   const discount  = Math.round(subtotal * couponPct / 100);
   const afterDiscount = subtotal - discount;
   const platformFee   = items.length > 0 ? PLATFORM_FEE : 0;
